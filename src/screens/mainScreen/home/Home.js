@@ -7,8 +7,10 @@ import Categories from '../../../components/categoriesComponent/categories/Categ
 import ProductMain from '../../../components/productComponent/productMain/ProductMain';
 import {useNavigation} from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { DrawerActions } from '@react-navigation/native';
 
-const Home = () => {
+
+const Home = ({navigation}) => {
   const {navigate} = useNavigation();
   return (
     <View style={homeStyle.homemain}>
@@ -31,7 +33,7 @@ const Home = () => {
             <TouchableOpacity onPress={() => navigate('My Cart')}>
               <Image source={require('../../../assets/images/icon_cart.png')} />
             </TouchableOpacity>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={()=>navigation.dispatch(DrawerActions.openDrawer())} >
               <Entypo name="menu" size={28} color="black" />
             </TouchableOpacity>
           </View>

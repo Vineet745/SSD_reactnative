@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const myOrders = () => {
+const LuckyDrawContest = () => {
   return (
     <View>
-      <Text>myOrders</Text>
+      <Text>LuckyDrawContest</Text>
     </View>
   )
 }
 
-export default myOrders
+export default LuckyDrawContest

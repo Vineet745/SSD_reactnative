@@ -17,6 +17,7 @@ const SingleProduct = () => {
     <ScrollView>
       {/* 1st View */}
       <View style={{flex:1,height:verticalScale(320) }}>
+        <SingleSwiper/>
       </View>
 
       {/* 2nd View */}
