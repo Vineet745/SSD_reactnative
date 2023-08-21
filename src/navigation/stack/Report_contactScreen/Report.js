@@ -1,13 +1,13 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import OrderInfo from './orderInfo/OrderInfo';
-import PaymentInfo from './paymentInfo/PaymentInfo';
-import Items from './items/Items';
+import OrderInfo from '../../../screens/drawerScreen/orderTrack/orderInfo/OrderInfo';
+import PaymentInfo from '../../../screens/drawerScreen/orderTrack/paymentInfo/PaymentInfo';
+import Items from '../../../screens/drawerScreen/orderTrack/items/Items';
 import {fonts} from '../../../utils/Theme';
 const Tab = createMaterialTopTabNavigator();
 
-const Ordertrack = () => {
+const Report = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -22,4 +22,4 @@ const Ordertrack = () => {
   );
 };
 
-export default Ordertrack;
+export default Report;

@@ -26,21 +26,20 @@ import { loginWithOtp } from '../../../redux/slice/authSlice';
   
     const [mobile, setMobile] = useState('');
   
-    // For handling
-    const handleSendotp = () => {
-      setModalVisible(prev => !prev);
-    };
+    // For closing custommodal
+
+    const closeModal = ()=>{
+      setModalVisible(false)
+    }
+    
 
     // For login with Otp
 
     const handleLoginOtp = async()=>{
-      const token = await AsyncStorage.getItem('TOKEN')
         try {
             const otpResponse = await LoginWithOtp({mobile})
-            dispatch(loginWithOtp(token))
-            console.log('Resoponse send')
-            console.log("otpdata",otpResponse)
-            handleSendotp()
+            setModalVisible(prev => !prev);
+            console.log("Otp send Successfully",otpResponse)
 
         } catch (error) {
             console.log("error",error)
@@ -75,7 +74,7 @@ import { loginWithOtp } from '../../../redux/slice/authSlice';
   
           <View>
             <Button
-              pressData={handleSendotp}
+              pressData={handleLoginOtp}
               backgroundColor={colors.violetcolor}
               title="Send Otp"
             />
@@ -103,7 +102,7 @@ import { loginWithOtp } from '../../../redux/slice/authSlice';
             </TouchableOpacity>
           </View>
         </View>
-        <CustomModal modalVisible={modalVisible} toggleModal={handleLoginOtp} />
+        <CustomModal modalVisible={modalVisible} closeModal={closeModal} mobile={mobile} />
       </View>
     );
   };

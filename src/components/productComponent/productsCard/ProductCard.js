@@ -7,10 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 
 
 const ProductCard = ({item}) => {
+  // console.log("item hai",item.customer_inventories.product_id)
   const {navigate} = useNavigation()
+  const ProductId = item.customer_inventories.product_id
   return (
     <View>
-      <TouchableOpacity onPress={()=>navigate('Product')}
+      <TouchableOpacity onPress={()=>navigate('Product',{productId:ProductId})}
         style={productCardStyle.productCardMain}>
         <View style={productCardStyle.imageHolder}>
           <Image source={require('../../../assets/images/product_img.png')} />

@@ -25,8 +25,6 @@ const Login = ({navigation}) => {
   const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
 
-  
-
   // Login User
   const handleLogin = async () => {
     try {

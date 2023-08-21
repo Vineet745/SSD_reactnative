@@ -7,7 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import {getAllProducts} from '../../../service/api/ProductApi';
 
 const ProductMain = ({title, touchableButton}) => {
-  const limit = 6
+  const limit = 6;
   const [products, setProducts] = useState([]);
   const handleProducts = async () => {
     try {

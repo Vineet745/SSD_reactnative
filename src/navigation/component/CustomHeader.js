@@ -9,6 +9,7 @@ import {fonts} from '../../utils/Theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
+import { RFValue } from 'react-native-responsive-fontsize';
 
 const CustomHeader = ({headerText,iconname}) => {
   const navigate = useNavigation();
@@ -30,13 +31,13 @@ const CustomHeader = ({headerText,iconname}) => {
           flexDirection: 'row',
         }}>
         <TouchableOpacity onPress={() => navigate.goBack()}>
-          <AntDesign name="left" size={22} style={{color: 'black'}} />
+          <AntDesign name="left" size={20} style={{color: 'black',marginLeft:horizontalScale(5),marginRight:horizontalScale(5)}} />
         </TouchableOpacity>
         <Text
           style={{
             fontFamily: fonts.SemiBold,
             color: 'black',
-            fontSize: 18,
+            fontSize: RFValue(14,667),
             marginLeft: verticalScale(10),
           }}>
           {headerText}

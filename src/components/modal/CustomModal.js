@@ -1,5 +1,5 @@
 import {View, Text, TextInput} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {
   horizontalScale,
@@ -9,11 +9,35 @@ import {
 import {colors, fonts} from '../../utils/Theme';
 import Button from '../Button';
 import {modalStyle} from './modalStyle';
-const CustomModal = ({modalVisible, toggleModal}) => {
+import {verifyUserWithOtp} from '../../service/api/UserApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {VerifyWithOtp} from '../../redux/slice/authSlice';
+
+const CustomModal = ({modalVisible, closeModal, mobile}) => {
+  const [otp, setOtp] = useState('');
+  const dispatch = useDispatch();
+
+  const handleVerify = async () => {
+    const token = await AsyncStorage.getItem('TOKEN');
+    console.log(token);
+    try {
+      const {data} = await verifyUserWithOtp({mobile, otp});
+      const token = data.data.api_token;
+      await AsyncStorage.setItem('TOKEN', token);
+      dispatch(VerifyWithOtp(token));
+      setOtp('')
+      console.log('success', data);
+      closeModal();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Modal
       backdropOpacity={1}
-      onBackdropPress={toggleModal}
+      onBackdropPress={closeModal}
       isVisible={modalVisible}>
       <View style={modalStyle.modalmain}>
         <View style={modalStyle.modalTopTextContainer}>
@@ -21,9 +45,11 @@ const CustomModal = ({modalVisible, toggleModal}) => {
           <Text style={modalStyle.modalText}>
             An OTP has been sent to your Mobile No.
           </Text>
-          <Text style={modalStyle.modalText}>9583723090</Text>
+          <Text style={modalStyle.modalText}>{mobile}</Text>
         </View>
         <TextInput
+          defaultValue={otp}
+          onChangeText={value => setOtp(value)}
           style={{
             backgroundColor: colors.greycolor,
             borderRadius: moderateScale(10),
@@ -37,7 +63,11 @@ const CustomModal = ({modalVisible, toggleModal}) => {
           placeholder="Enter OTP here..."
         />
         <View style={{width: '100%'}}>
-          <Button backgroundColor={colors.black} title="Submit OTP" />
+          <Button
+            backgroundColor={colors.black}
+            pressData={handleVerify}
+            title="Submit OTP"
+          />
         </View>
         <View style={modalStyle.modalbottomtext}>
           <Text style={modalStyle.modalText}>01:58 min </Text>

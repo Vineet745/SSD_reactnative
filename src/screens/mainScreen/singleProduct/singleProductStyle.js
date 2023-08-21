@@ -7,7 +7,7 @@ export default singleProductStyle = StyleSheet.create({
     quantityWrapper:{
         flexDirection:"row",
         alignItems:"center",
-        width:horizontalScale(80),
+        width:horizontalScale(100),
         justifyContent:'space-between'
       },
       priceDescription:{

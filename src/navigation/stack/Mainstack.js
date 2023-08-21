@@ -24,8 +24,9 @@ import LuckyDrawContest from '../../screens/drawerScreen/luckyDraw/LuckyDrawCont
 import LoyaltyPoints from '../../screens/drawerScreen/loyaltyPoints/LoyaltyPoints';
 import Report_Contact from '../../screens/drawerScreen/report/Report_Contact';
 import LocateStore from '../../screens/drawerScreen/locateStore/LocateStore';
-import Ordertrack from '../../screens/drawerScreen/orderTrack/Ordertrack';
+import Ordertrack from './myOrderScreen/Ordertrack';
 import CustomHeader from '../component/CustomHeader';
+import Report from './Report_contactScreen/Report';
 
 const Stack = createNativeStackNavigator();
 
@@ -75,7 +76,7 @@ const Drawerstack = () => {
   return (
     <Drawer.Navigator
       screenOptions={{
-        headerShown:false,
+        headerShown: false,
         drawerLabelStyle: {
           fontFamily: fonts.Bold,
           marginLeft: horizontalScale(-15),
@@ -83,8 +84,8 @@ const Drawerstack = () => {
         drawerPosition: 'right',
         drawerContentStyle: {
           fontFamily: fonts.SemiBold,
-        },
           
+        },
       }}>
       <Drawer.Screen
         name="Searchstack"
@@ -99,25 +100,29 @@ const Drawerstack = () => {
         name="My Orders"
         component={MyOrder}
         options={{
-          headerShown:true,
+          headerShown: true,
           drawerIcon: () => {
             return (
               <Image source={require('../../assets/images/icon_order.png')} />
             );
           },
-          header:()=>{
-            return <CustomHeader headerText="My Orders" iconname="filter"/>
-          }
+          header: () => {
+            return <CustomHeader headerText="My Orders" iconname="filter" />;
+          },
         }}
       />
       <Drawer.Screen
         name="My Loyalty Points"
         component={LoyaltyPoints}
         options={{
+          headerShown: true,
           drawerIcon: () => {
             return (
               <Image source={require('../../assets/images/icon_loyalty.png')} />
             );
+          },
+          header: () => {
+            return <CustomHeader headerText="My Loyalty Points" />;
           },
         }}
       />
@@ -125,39 +130,43 @@ const Drawerstack = () => {
         name="Lucky Draw Contest"
         component={LuckyDrawContest}
         options={{
+          headerShown: true,
           drawerIcon: () => {
             return (
               <Image source={require('../../assets/images/icon_lucky.png')} />
             );
           },
-          
         }}
       />
       <Drawer.Screen
         name="My Profile"
         component={Profile}
         options={{
-          headerShown:true,
+          headerShown: true,
           drawerIcon: () => {
             return (
               <Image source={require('../../assets/images/icon_user.png')} />
             );
           },
-          header:()=>{
-            return <CustomHeader headerText="My Profile" iconname="edit-2"/>
-          }
-          
+          header: () => {
+            return <CustomHeader headerText="My Profile" iconname="edit-2" />;
+          },
         }}
       />
       <Drawer.Screen
         name="Report & Contact Us"
         component={Report_Contact}
+        
         options={{
+          headerShown:true,
           drawerIcon: () => {
             return (
               <Image source={require('../../assets/images/icon_help.png')} />
             );
           },
+          header:()=>{
+            return <CustomHeader headerText="Contact Us"/>
+          }
         }}
       />
       <Drawer.Screen
@@ -235,6 +244,7 @@ const Mainstack = () => {
             },
           }}
         />
+        
       </Stack.Navigator>
     </View>
   );

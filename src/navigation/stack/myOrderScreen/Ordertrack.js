@@ -5,26 +5,21 @@ import OrderInfo from '../../../screens/drawerScreen/orderTrack/orderInfo/OrderI
 import PaymentInfo from '../../../screens/drawerScreen/orderTrack/paymentInfo/PaymentInfo';
 import Items from '../../../screens/drawerScreen/orderTrack/items/Items';
 import {fonts} from '../../../utils/Theme';
-import ReportIssue from '../../Report_ContactScreen.js/reportIssue/ReportIssue';
-import IssueHistory from '../../Report_ContactScreen.js/issueHistory/IssueHistory';
-import ContactInfo from '../../Report_ContactScreen.js/contactInfo/ContactInfo';
 const Tab = createMaterialTopTabNavigator();
 
-const Report = () => {
+const Ordertrack = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarInactiveTintColor:"black",
         tabBarLabelStyle: {
-          fontFamily: fonts.Medium,
-          
+          fontFamily: fonts.SemiBold,
         },
       }}>
-      <Tab.Screen name="Report an" component={ReportIssue}/>
-      <Tab.Screen name="Issue History" component={IssueHistory} />
-      <Tab.Screen name="Contact Info" component={ContactInfo} />
+      <Tab.Screen name="Order Info" component={OrderInfo} />
+      <Tab.Screen name="Payment Info" component={PaymentInfo} />
+      <Tab.Screen name="Items" component={Items} />
     </Tab.Navigator>
   );
 };
 
-export default Report;
+export default Ordertrack;

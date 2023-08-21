@@ -28,3 +28,26 @@ export const getAllProducts = async ({limit,page}) => {
     throw error;
   }
 };
+
+
+export const getSingleProduct = async (product_id)=>{
+  const formData = new FormData()
+  formData.append('product_id', product_id)
+  try {
+    const token = await AsyncStorage.getItem('TOKEN'); 
+
+    const res = await axios({
+      method:"post",
+      url:`${BaseUrl}customer/find-product`,
+      data:formData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return res;
+  } catch (error) {
+    console.log("error",error.response.data)
+    throw error
+  }
+}

@@ -1,4 +1,4 @@
-import {View, Text, TextInput, TouchableOpacity, Modal, ActivityIndicator} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Modal, ActivityIndicator,ScrollView} from 'react-native';
 import React, {useState} from 'react';
 import Button from '../../../components/Button';
 import Background from '../../../components/Background';
@@ -8,6 +8,7 @@ import { RegisterUser } from '../../../service/api/UserApi';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../../redux/slice/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { verticalScale } from '../../../utils/Dimension';
 
 const Register = ({navigation}) => {
 
@@ -41,14 +42,18 @@ const Register = ({navigation}) => {
 
 
   return (
-    <View style={registerStyle.registerMain}>
+    <View style={{flex:1}}>
 
+    <View style={registerStyle.registerMain}>
+      <View style={{flex:1}}>
       <Background />
+      </View>
       <Modal visible={loading} transparent={true}  animationType="none">
         <View style={loginStyle.modalContainer}>
           <ActivityIndicator  size="large" color="lightgreen"/>
         </View>
       </Modal>
+      <ScrollView style={{flex:1}}>
       <View style={registerStyle.textArea}>
         <Text style={registerStyle.registerTaintext}>Please Register,</Text>
         <View style={registerStyle.inputHolder}>
@@ -101,6 +106,8 @@ const Register = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </View>
+      </ScrollView>
+    </View>
     </View>
   );
 };
