@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'react-native-axios';
-const BaseUrl = 'http://stagingapi.shreesaidarshan.com/api/';
+const baseUrl = 'http://stagingapi.shreesaidarshan.com/api/';
+import axios from "axios"
 
 // Categories with the limit
 
@@ -12,7 +12,7 @@ export const getCategories = async ({page, limit}) => {
   };
 
   return axios.get(
-    `${BaseUrl}customer/get-categories?page=${page}&limit=${limit}`,
+    `${baseUrl}customer/get-categories?page=${page}&limit=${limit}`,
     {headers},
   );
 };
@@ -26,5 +26,14 @@ export const allcategories = async () => {
     'Content-Type': 'application/json',
   };
 
-  return axios.get(`${BaseUrl}customer/get-categories`, {headers});
+  return axios.get(`${baseUrl}customer/get-categories`, {headers});
 };
+
+
+export const subCategory = async()=>{
+  const token = await AsyncStorage.getItem('TOKEN')
+  const res = await axios({
+    method:"get",
+    url:`${baseUrl}customer/get-subcategories?categories_id=`
+  })
+}

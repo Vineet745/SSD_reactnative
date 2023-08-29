@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {View, Text, TouchableOpacity, Image, ScrollView, Modal, ActivityIndicator} from 'react-native';
 import {
   horizontalScale,
   moderateScale,
@@ -10,32 +10,87 @@ import singleProductStyle from './singleProductStyle';
 import SingleSwiper from '../../../components/SingleSwiper';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {getSingleProduct} from '../../../service/api/ProductApi';
+import { addCart, getCart } from '../../../service/api/CartApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { decrement, increment, setSelectedProduct, singleProductAdd } from '../../../redux/slice/counterSlice';
+import { cartlength } from '../../../redux/slice/cartSlice';
 
 const SingleProduct = ({route, navigation}) => {
-  const {
-    params: {productId},
-  } = route;
-  const [singledata, setSingledata] = useState('');
-  const [productCount, setProductCount] = useState('');
 
-  useEffect(() => {
+  const {selectedProduct} = useSelector(state=>state.counter)
+
+  const {params: {productId}} = route;
+  const dispatch = useDispatch()
+
+  const [singledata, setSingledata] = useState('');
+  const [loading, setloading] = useState(false)
+
+   useEffect(() => {
     handleGetSingleProduct();
   }, []);
 
+
+  // Get SingleProduct
+
   const handleGetSingleProduct = async () => {
     try {
+      setloading(true)
       const {data} = await getSingleProduct(productId);
-      console.log('singledata', data?.data?.data[0]);
       setSingledata(data?.data?.data[0]);
-      console.log('this is the file', singledata?.file);
+      setloading(false)
     } catch (error) {
       console.log('error', error);
+      setloading(false)
       throw error;
     }
   };
 
+
+
+
+// Add to cart
+
+
+
+const handleAddToCart = async()=>{
+  try {
+
+    const userdata = {
+      batch_number:singledata.inventoriess?.[0]?.batch_id,
+      inventory_id:singledata.inventoriess?.[0]?.transaction?.inventory_id,
+      quantity:selectedProduct.quantity,
+      quantity_count:selectedProduct.quantity,
+      priceable_quantity:selectedProduct.quantity,
+      price:singledata?.inventoriess?.[0]?.transaction.purchase_data?.default_price,
+      unit_price:singledata?.inventoriess?.[0]?.transaction.purchase_data?.default_price,
+      product_type:singledata.packing_type,
+      product_type_id:singledata.inventoriess?.[0]?.transaction?.purchase_id,
+      unit_quantity:selectedProduct.quantity,
+      slab_id: singledata.inventoriess?.[0]?.transaction?.purchase_data?.product_slab,
+      type:"ONLINE"
+
+    }
+    const data = await addCart({userdata})
+    dispatch(singleProductAdd(data?.data?.data))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+// const Mrp = singledata?.inventoriess[0]?.transaction?.purchase_data?.mrp
   return (
     <ScrollView>
+
+      {/* //Modal */}
+      <Modal visible={loading} transparent={true} animationType="none">
+        <View style={categoriesScreenStyle.modalContainer}>
+          <ActivityIndicator size="large" color="blue" />
+        </View>
+      </Modal>
+
+
+
       {/* 1st View */}
       <View style={{flex: 1}}>
         <View style={{paddingVertical: verticalScale(10)}}>
@@ -61,17 +116,19 @@ const SingleProduct = ({route, navigation}) => {
       <View
         style={{
           paddingHorizontal: horizontalScale(20),
-          marginVertical: verticalScale(5),
+          paddingVertical: verticalScale(10),
           backgroundColor: 'white',
         }}>
         <View style={singleProductStyle.priceDescription}>
           <View style={singleProductStyle.leftView}>
             <View style={singleProductStyle.price_offer}>
               <Text style={singleProductStyle.price_offer_textone}>
-                M.R.P. :₹ 15.00{' '}
+              M.R.P.: ₹ {singledata?.inventoriess?.[0]?.transaction?.purchase_data?.mrp}
               </Text>
+              
+
               <Text style={singleProductStyle.price_offer_Discount}>
-                20% Off{' '}
+                20% Off
               </Text>
             </View>
             <Text
@@ -79,11 +136,11 @@ const SingleProduct = ({route, navigation}) => {
                 singleProductStyle.price_offer_textone,
                 {marginTop: verticalScale(5), fontSize: RFValue(14, 667)},
               ]}>
-              Our Price: ₹ 12.75
+              Our Price: ₹ {singledata?.inventoriess?.[0]?.transaction?.purchase_data?.default_price}
             </Text>
           </View>
           <View style={singleProductStyle.quantityWrapper}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>dispatch(decrement(productId))}>
               <Image
                 style={{
                   width: horizontalScale(30),
@@ -94,9 +151,11 @@ const SingleProduct = ({route, navigation}) => {
             </TouchableOpacity>
             <Text
               style={{fontFamily: fonts.SemiBold, fontSize: RFValue(14, 667)}}>
-              {productCount}
+              {selectedProduct.quantity}
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>{
+              dispatch(increment(productId)) 
+            }}>
               <Image
                 style={{
                   width: horizontalScale(30),
@@ -139,6 +198,11 @@ const SingleProduct = ({route, navigation}) => {
           <Text style={singleProductStyle.productDetail}>
             - Buy 10 unit & save ₹ 0.75 per unit.
           </Text>
+        </View>
+        <View>
+        <TouchableOpacity onPress={()=>handleAddToCart()} activeOpacity={1} style={singleProductStyle.Addbutton}>
+          <Text style={{color:colors.white,fontFamily:fonts.Bold}}>Add to cart</Text>
+        </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

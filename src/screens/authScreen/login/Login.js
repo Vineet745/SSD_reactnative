@@ -14,7 +14,7 @@ import {colors, fonts} from '../../../utils/Theme';
 import {verticalScale} from '../../../utils/Dimension';
 // import Modal from '../../../components/modal/CustomModal';
 import {LoginUser} from '../../../service/api/UserApi';
-import {loginUser} from '../../../redux/slice/authSlice';
+import {loginUser, userdata} from '../../../redux/slice/authSlice';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

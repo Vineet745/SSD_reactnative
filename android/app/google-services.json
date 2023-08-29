@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "543449698568",
+    "project_id": "shreesaidarshan-c7659",
+    "storage_bucket": "shreesaidarshan-c7659.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543449698568:android:4e522905105f6c65c81cbd",
+        "android_client_info": {
+          "package_name": "com.ssd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543449698568-oflibcmqnjrsn44d1tn3li8qrebloi52.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVTP1AIO-8WR1y5lz5BxQSK1YDZQrM5jk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543449698568-oflibcmqnjrsn44d1tn3li8qrebloi52.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

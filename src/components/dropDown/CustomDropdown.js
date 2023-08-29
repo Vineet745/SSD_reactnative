@@ -1,65 +1,53 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {Dropdown} from 'react-native-element-dropdown';
+import {fonts} from '../../utils/Theme';
+import {useDispatch, useSelector} from 'react-redux';
 
-const data = [
-  { label: 'Item 1', value: '1' },
-  { label: 'Item 2', value: '2' },
-  { label: 'Item 3', value: '3' },
-  { label: 'Item 4', value: '4' },
-  { label: 'Item 5', value: '5' },
-  { label: 'Item 6', value: '6' },
-  { label: 'Item 7', value: '7' },
-  { label: 'Item 8', value: '8' },
-];
-
-const CustomDropdown = () => {
-  const [value, setValue] = useState(null);
+const CustomDropdown = ({
+  backgroundColor,
+  placeholder,
+  data,
+  labelField,
+  valueField,
+  onChangeText,
+}) => {
+  const [selectedState, setSelectedState] = useState();
   const [isFocus, setIsFocus] = useState(false);
 
-  // const renderLabel = () => {
-  //   if (value || isFocus) {
-  //     return (
-  //       <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-  //         Dropdown label
-  //       </Text>
-  //     );
-  //   }
-  //   return null;
-  // };
 
   return (
-    <View style={styles.container}>
-      <Dropdown
-        style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-        placeholderStyle={styles.placeholderStyle}
-        selectedTextStyle={styles.selectedTextStyle}
-        iconStyle={styles.iconStyle}
-        data={data}
-        maxHeight={300}
-        labelField="label"
-        valueField="value"
-        placeholder={!isFocus ? 'Select item' : '...'}
-        value={value}
-        onFocus={() => setIsFocus(true)}
-        onBlur={() => setIsFocus(false)}
-        onChange={item => {
-          setValue(item.value);
-          setIsFocus(false);
-        }}
-       
-      />
+    <View style={[styles.container, {backgroundColor: backgroundColor}]}>
+      {data && (
+        <Dropdown
+          style={[styles.dropdown, isFocus]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          iconStyle={styles.iconStyle}
+          data={data}
+          maxHeight={300}
+          labelField={labelField}
+          valueField={valueField}
+          placeholder={!isFocus ? placeholder : '...'}
+          value={selectedState}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setSelectedState(item.id);
+            onChangeText(item[valueField]);
+            setIsFocus(false);
+          }}
+        />
+      )}
     </View>
   );
 };
-
 export default CustomDropdown;
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#eef3f6',
-    padding: 16,
+    borderRadius: 8,
   },
   dropdown: {
     height: 50,
@@ -67,6 +55,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
+    fontFamily: fonts.SemiBold,
   },
   icon: {
     marginRight: 5,
@@ -81,10 +70,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: 13,
+    fontFamily: fonts.SemiBold,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: 13,
+    fontFamily: fonts.Medium,
   },
   iconStyle: {
     width: 20,

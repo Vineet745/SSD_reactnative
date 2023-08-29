@@ -39,6 +39,30 @@ export default checkOutStyle = StyleSheet.create({
     fontFamily: fonts.Medium,
     color: colors.black,
   },
+  dataTimeSelector:{
+    marginTop:verticalScale(10),
+    paddingHorizontal:horizontalScale(20),
+    backgroundColor:"#eef3f6"
+    
+  },
+  dateTimeMainText: {
+    fontFamily: fonts.SemiBold,
+    color: '#5e7c91',
+    marginVertical:verticalScale(10)
+  },
+
+  selectedDelievery:{
+   marginVertical:verticalScale(5),
+   flexDirection:"row",
+   alignItems:"center",
+   justifyContent:"space-between",
+   borderWidth:0.3,
+   paddingVertical:verticalScale(12),
+   paddingHorizontal:horizontalScale(10),
+   borderRadius:moderateScale(5)
+
+  },
+
   contactView: {
     marginTop: verticalScale(12),
     paddingHorizontal: horizontalScale(20),
@@ -53,7 +77,7 @@ export default checkOutStyle = StyleSheet.create({
     backgroundColor: 'white',
     marginVertical: verticalScale(10),
     borderRadius: moderateScale(10),
-    paddingLeft: horizontalScale(15),
+    paddingLeft: horizontalScale(10),
   },
 
   LoyaltyView: {
@@ -73,10 +97,12 @@ export default checkOutStyle = StyleSheet.create({
   },
   loyaltyPointsText: {fontFamily: fonts.SemiBold, color: '#7f94a2'},
   ReddemView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: moderateScale(15),
-    overflow: 'hidden',
+    backgroundColor: 'white',
+    borderRadius: moderateScale(10),
+    paddingLeft: horizontalScale(10),
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"space-between"
   },
   ReddemButton: {
     backgroundColor: '#5e7c91',
@@ -97,11 +123,13 @@ export default checkOutStyle = StyleSheet.create({
     backgroundColor: '#eef3f6',
   },
   couponCodeView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: moderateScale(15),
-    overflow: 'hidden',
-    marginTop: verticalScale(10),
+    backgroundColor: 'white',
+    borderRadius: moderateScale(10),
+    paddingLeft: horizontalScale(10),
+    marginTop:verticalScale(10),
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"space-between"
   },
   offerView:{
     fontFamily:fonts.SemiBold,

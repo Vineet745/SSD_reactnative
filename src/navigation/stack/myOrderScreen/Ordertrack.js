@@ -7,7 +7,8 @@ import Items from '../../../screens/drawerScreen/orderTrack/items/Items';
 import {fonts} from '../../../utils/Theme';
 const Tab = createMaterialTopTabNavigator();
 
-const Ordertrack = () => {
+const Ordertrack = ({route}) => {
+  const { params: { singleOrderData } } = route;
   return (
     <Tab.Navigator
       screenOptions={{
@@ -15,9 +16,9 @@ const Ordertrack = () => {
           fontFamily: fonts.SemiBold,
         },
       }}>
-      <Tab.Screen name="Order Info" component={OrderInfo} />
-      <Tab.Screen name="Payment Info" component={PaymentInfo} />
-      <Tab.Screen name="Items" component={Items} />
+      <Tab.Screen name="Order Info" component={OrderInfo}  initialParams={{singleOrderData:singleOrderData}} />
+      <Tab.Screen name="Payment Info" component={PaymentInfo} initialParams={{singleOrderData:singleOrderData}}  />
+      <Tab.Screen name="Items" component={Items} initialParams={{singleOrderData:singleOrderData}}/>
     </Tab.Navigator>
   );
 };

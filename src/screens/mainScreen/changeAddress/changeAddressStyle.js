@@ -7,7 +7,7 @@ export const ChangeAddressStyle = StyleSheet.create({
         backgroundColor:"white",
         flex:1,
         paddingVertical:verticalScale(10),
-        paddingHorizontal:horizontalScale(20)
+        paddingHorizontal:horizontalScale(20),
 
     },
     AddressBox:{

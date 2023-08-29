@@ -25,12 +25,13 @@ export default orderedItemStyle = StyleSheet.create({
   },
   detailHolder: {
     paddingLeft: horizontalScale(10),
-    paddingVertical:verticalScale(10)
+    paddingVertical: verticalScale(10),
+    width:horizontalScale(225)
   },
   titleText: {
     fontFamily: fonts.SemiBold,
     color: colors.black,
-    fontSize:RFValue(12,667)
+    fontSize: RFValue(12, 667),
   },
   productType: {
     color: '#5e7c91',
@@ -41,7 +42,7 @@ export default orderedItemStyle = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: verticalScale(8),
-    width:horizontalScale(200),
+    width: horizontalScale(200),
     justifyContent: 'space-between',
   },
   MrpViewFirsttextContainer: {
@@ -78,23 +79,20 @@ export default orderedItemStyle = StyleSheet.create({
   bottomWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:"space-between"
+    justifyContent: 'space-between',
   },
-  bottomWrapperView:{
+  bottomWrapperView: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent:"space-between",
-    
-
+    justifyContent: 'space-between',
   },
-  bottomWrapperheading:{
-    fontFamily:fonts.Medium,
-    color:"#5f7d92"
+  bottomWrapperheading: {
+    fontFamily: fonts.Medium,
+    color: '#5f7d92',
   },
-  bottomWrappertext:{
-    fontFamily:fonts.Bold,
-    color:"#5f7d92",
-    color:colors.black
-  }
-  
+  bottomWrappertext: {
+    fontFamily: fonts.Bold,
+    color: '#5f7d92',
+    color: colors.black,
+  },
 });

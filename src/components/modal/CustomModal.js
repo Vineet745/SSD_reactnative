@@ -15,19 +15,19 @@ import {useDispatch} from 'react-redux';
 import {VerifyWithOtp} from '../../redux/slice/authSlice';
 
 const CustomModal = ({modalVisible, closeModal, mobile}) => {
+  
   const [otp, setOtp] = useState('');
   const dispatch = useDispatch();
 
+
   const handleVerify = async () => {
     const token = await AsyncStorage.getItem('TOKEN');
-    console.log(token);
     try {
       const {data} = await verifyUserWithOtp({mobile, otp});
       const token = data.data.api_token;
       await AsyncStorage.setItem('TOKEN', token);
       dispatch(VerifyWithOtp(token));
-      setOtp('')
-      console.log('success', data);
+      setOtp('');
       closeModal();
     } catch (error) {
       console.log(error);

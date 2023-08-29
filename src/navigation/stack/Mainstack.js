@@ -26,11 +26,15 @@ import Report_Contact from '../../screens/drawerScreen/report/Report_Contact';
 import LocateStore from '../../screens/drawerScreen/locateStore/LocateStore';
 import Ordertrack from './myOrderScreen/Ordertrack';
 import CustomHeader from '../component/CustomHeader';
-import Report from './Report_contactScreen/Report';
+import Categorydata from '../../screens/mainScreen/categoryData/Categorydata';
+import SearchScreen from '../../screens/searchScreen/SearchScreen';
+import CartIcon from '../component/CartIcon';
+import { useSelector } from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 
 const Drawer = createDrawerNavigator();
+
 
 //Stack with Search Tab
 
@@ -55,15 +59,18 @@ const SearchStack = () => {
           name="Featured Products"
           component={FeatureProducts}
           options={{
-            headerRight: () => (
-              <TouchableOpacity>
-                <Image
-                  source={require('../../assets/images/icon_cart.png')}
-                  style={{marginRight: horizontalScale(10)}}
-                />
-              </TouchableOpacity>
-            ),
+            headerRight: () => <CartIcon />,
           }}
+        />
+        <Stack.Screen
+          name="Category_data"
+          component={Categorydata}
+          options={({ route }) => ({
+            title: route.params.categoryName,
+            headerRight: () => (
+              <CartIcon/>
+            ),
+          })}
         />
       </Stack.Navigator>
     </View>
@@ -84,7 +91,6 @@ const Drawerstack = () => {
         drawerPosition: 'right',
         drawerContentStyle: {
           fontFamily: fonts.SemiBold,
-          
         },
       }}>
       <Drawer.Screen
@@ -106,6 +112,7 @@ const Drawerstack = () => {
               <Image source={require('../../assets/images/icon_order.png')} />
             );
           },
+          
           header: () => {
             return <CustomHeader headerText="My Orders" iconname="filter" />;
           },
@@ -156,17 +163,16 @@ const Drawerstack = () => {
       <Drawer.Screen
         name="Report & Contact Us"
         component={Report_Contact}
-        
         options={{
-          headerShown:true,
+          headerShown: true,
           drawerIcon: () => {
             return (
               <Image source={require('../../assets/images/icon_help.png')} />
             );
           },
-          header:()=>{
-            return <CustomHeader headerText="Contact Us"/>
-          }
+          header: () => {
+            return <CustomHeader headerText="Contact Us" />;
+          },
         }}
       />
       <Drawer.Screen
@@ -207,21 +213,28 @@ const Mainstack = () => {
           name="Categories"
           component={CategoriesScreen}
           options={{
-            headerRight: () => (
-              <TouchableOpacity>
-                <Image
-                  source={require('../../assets/images/icon_cart.png')}
-                  style={{marginRight: horizontalScale(10)}} // Adjust the margin as needed
-                />
-              </TouchableOpacity>
-            ),
+            headerRight: () => <CartIcon />,
           }}
         />
 
         <Stack.Screen name="Checkout & Options" component={CheckOutPage} />
+
         <Stack.Screen name="Change Address" component={ChangeAddress} />
         <Stack.Screen name="Confirm Address" component={ConfirmAddress} />
-        <Stack.Screen name="Product" component={SingleProduct} />
+        <Stack.Screen
+          name="Product"
+          component={SingleProduct}
+          options={{
+            headerRight: () => {
+              return <CartIcon />;
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Search"
+          component={SearchScreen}
+          options={{headerShown: false}}
+        />
         <Stack.Screen
           name="Orders"
           component={Ordertrack}
@@ -244,7 +257,6 @@ const Mainstack = () => {
             },
           }}
         />
-        
       </Stack.Navigator>
     </View>
   );

@@ -12,7 +12,7 @@ const ReportIssue = () => {
         <View style={{backgroundColor:"#eef3f6",paddingVertical:verticalScale(10),paddingHorizontal:horizontalScale(10)}}>
             <Text style={{fontFamily:fonts.SemiBold,marginBottom:verticalScale(5)}}>Select Order id</Text>
             <View>
-            <CustomDropdown/>
+            <CustomDropdown />
             </View>
         </View>
 

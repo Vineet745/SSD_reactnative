@@ -4,7 +4,45 @@ import cartItemStyle from './cartItemStyle';
 import {fonts} from '../../utils/Theme';
 import {horizontalScale, verticalScale} from '../../utils/Dimension';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-const CartItem = () => {
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteSingleCartItem} from '../../redux/slice/cartSlice';
+import {deleteCart} from '../../service/api/CartApi';
+import { increment,decrement} from '../../redux/slice/counterSlice';
+import { RFValue } from 'react-native-responsive-fontsize';
+const CartItem = ({item}) => {
+  // Getting Product count from the Redux
+  
+const defaultPrice = item?.inventories?.transaction?.purchase_data?.default_price
+const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
+
+
+
+
+  const productId = item.product_id;
+  const id = item.id;
+  const {navigate} = useNavigation();
+  const dispatch = useDispatch();
+
+  // Delete Single Cart Item
+
+  const DeleteSingleItem = async () => {
+    try {
+      const {data} = await deleteCart(id);
+      dispatch(deleteSingleCartItem(productId));
+    } catch (error) {
+      console.log(error, 'error');
+    }
+  };
+
+  // Quantity Decrement
+
+  const decrement = productId => {
+    if (item.quantityCount > 1) {
+      dispatch(decrement(productId));
+    }
+  };
+
   return (
     <View style={cartItemStyle.cartItemMain}>
       <TouchableOpacity activeOpacity={1} style={cartItemStyle.productCardMain}>
@@ -18,7 +56,10 @@ const CartItem = () => {
 
         <View style={cartItemStyle.detailHolder}>
           {/* Cross Icon */}
-          <TouchableOpacity style={{marginBottom: verticalScale(20)}}>
+
+          <TouchableOpacity
+            onPress={() => DeleteSingleItem()}
+            style={{marginBottom: verticalScale(20)}}>
             <AntDesign
               name="close"
               size={25}
@@ -27,17 +68,17 @@ const CartItem = () => {
           </TouchableOpacity>
 
           {/* {Title Text} */}
+
           <Text style={cartItemStyle.titleText}>
-            Maggie Noodles - Small (100gm)
+            {item.product.product_name.substring(0, 25)}...
           </Text>
 
           <View style={cartItemStyle.MrpView}>
             <View style={cartItemStyle.MrpViewFirsttextContainer}>
-              <Text style={cartItemStyle.MrpText}>M.R.P. : 15.00</Text>
-              <View style={cartItemStyle.strikeLine}></View>
+              <Text style={cartItemStyle.MrpText}>M.R.P. : ₹ {Mrp}</Text>
             </View>
             <Text style={cartItemStyle.offerText}> 20% Off</Text>
-            <Text style={cartItemStyle.ourPriceText}>Our Price: 12.75</Text>
+            <Text style={cartItemStyle.ourPriceText}>Our Price: ₹ {defaultPrice}</Text>
           </View>
 
           {/* Border View */}
@@ -52,7 +93,7 @@ const CartItem = () => {
 
           <View style={cartItemStyle.bottomWrapper}>
             <View style={cartItemStyle.quantityWrapper}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => dispatch(decrement(productId))}>
                 <Image
                   style={{
                     width: horizontalScale(25),
@@ -61,8 +102,12 @@ const CartItem = () => {
                   source={require('../../assets/images/minus.png')}
                 />
               </TouchableOpacity>
-              <Text style={{fontFamily: fonts.SemiBold}}>01</Text>
-              <TouchableOpacity>
+
+              <Text style={{fontFamily: fonts.SemiBold}}>
+                {item.quantity}
+                {/* {item.quantityCount?item.quantityCount:item.quantity} */}
+              </Text>
+              <TouchableOpacity onPress={() => dispatch(increment(productId))}>
                 <Image
                   style={{
                     width: horizontalScale(25),
@@ -76,8 +121,10 @@ const CartItem = () => {
             <TouchableOpacity style={{marginLeft: verticalScale(5)}}>
               <AntDesign name="close" size={15} />
             </TouchableOpacity>
-            <Text style={{fontFamily: fonts.SemiBold}}> ₹ 12.75 = </Text>
-            <Text style={{fontFamily: fonts.SemiBold}}> ₹ 25.50 </Text>
+            <Text style={{fontFamily: fonts.SemiBold,fontSize:RFValue(11,667)}}> ₹ {defaultPrice} =  </Text>
+            <Text style={{fontFamily: fonts.SemiBold,fontSize:RFValue(11,667)}}>
+            {item.total_price}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>

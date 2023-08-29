@@ -8,13 +8,15 @@ import {getCategories} from '../../../service/api/CategoryApi';
 
 const Categories = () => {
   const [category, setCategory] = useState([]);
+  const {navigate} = useNavigation();
 
   // For the Api's
 
   const page = 2;
   const limit = 5;
 
-  // Call Api
+  // Get Category
+
   const handleCategory = async () => {
     try {
       const {data} = await getCategories({page, limit});
@@ -28,7 +30,6 @@ const Categories = () => {
     handleCategory();
   }, []);
 
-  const {navigate} = useNavigation();
   return (
     <View style={categoryStyle.categoryMain}>
       <View style={categoryStyle.categoryMainTop}>
@@ -44,16 +45,11 @@ const Categories = () => {
           return (
             <CategoriesItem
               key={index}
-              text={item.name}
+              item={item}
               backgroundColor={'#f59f9f'}
             />
           );
         })}
-        {/* <CategoriesItem text="Staples" backgroundColor={'#f59f9f'} />
-        <CategoriesItem text="Beverages" backgroundColor={'#76b8bf'} />
-        <CategoriesItem text="DryFruits" backgroundColor={'#c5a28d'} />
-        <CategoriesItem text="Fruits & Veggies" backgroundColor={'#f59f9f'} />
-        <CategoriesItem text="Dairy Products" backgroundColor={'#dfb381'} /> */}
       </View>
     </View>
   );

@@ -1,14 +1,27 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import categoryCardStyle from './categoryCardStyle';
+import {useNavigation} from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { getCategoryName } from '../../../redux/slice/categorySlice';
 
-const CategoriesItem = ({text, backgroundColor}) => {
+const CategoriesItem = ({backgroundColor, item}) => {
+  const dispatch = useDispatch()
+  const {navigate} = useNavigation();
+  const categoryId = item.id;
+
+  dispatch(getCategoryName(item.name))
+
   return (
-    <TouchableOpacity>
-    <View
-      style={[categoryCardStyle.cardmain, {backgroundColor: backgroundColor}]}>
-      <Text style={categoryCardStyle.cardtext}>{text}</Text>
-    </View>
+    <TouchableOpacity
+      onPress={() => navigate('Category_data', {category: categoryId,categoryName:item.name})}>
+      <View
+        style={[
+          categoryCardStyle.cardmain,
+          {backgroundColor: backgroundColor},
+        ]}>
+        <Text style={categoryCardStyle.cardtext}>{item.name}</Text>
+      </View>
     </TouchableOpacity>
   );
 };

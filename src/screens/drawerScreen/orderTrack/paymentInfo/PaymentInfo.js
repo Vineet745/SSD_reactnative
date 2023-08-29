@@ -3,7 +3,8 @@ import React from 'react';
 import {horizontalScale, verticalScale} from '../../../../utils/Dimension';
 import OrderText from '../../../../components/orderText/OrderText';
 
-const PaymentInfo = () => {
+const PaymentInfo = ({route}) => {
+  const {params:{singleOrderData}} = route;
   return (
     <View
       style={{
@@ -12,7 +13,7 @@ const PaymentInfo = () => {
         backgroundColor: 'white',
         paddingHorizontal: horizontalScale(18),
       }}>
-      <OrderText heading="Total Amount Paid" text="₹ 2,998.00" />
+      <OrderText heading="Total Amount Paid" text={singleOrderData.total_amount} />
       <OrderText heading="Payment Method" text="Cash on Delivery" />
       <OrderText heading="Payment Status" text="Waiting" />
       <OrderText heading="Payment Transaction Id" text="N/A" />

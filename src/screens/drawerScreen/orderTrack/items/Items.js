@@ -1,9 +1,13 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView,FlatList} from 'react-native';
 import React from 'react';
 import OrderedItem from '../../../../components/orderdItem/OrderedItem';
 import {horizontalScale, verticalScale} from '../../../../utils/Dimension';
 
-const Items = () => {
+const Items = ({route}) => {
+  const {params:{singleOrderData}} = route;
+  const products = singleOrderData ? singleOrderData.total_products : [];
+
+
   return (
     <View
       style={{
@@ -12,14 +16,14 @@ const Items = () => {
         paddingVertical: verticalScale(15),
         paddingHorizontal: horizontalScale(15),
       }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <OrderedItem />
-        <OrderedItem />
-        <OrderedItem />
-        <OrderedItem />
-        <OrderedItem />
-        <OrderedItem />
-      </ScrollView>
+      <FlatList
+          showsVerticalScrollIndicator={false}
+          data={products}
+          keyExtractor={(item, index) => index}
+          renderItem={({item, index}) => (         
+              <OrderedItem item={item} />
+          )}
+        />
     </View>
   );
 };

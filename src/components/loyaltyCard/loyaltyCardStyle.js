@@ -5,7 +5,7 @@ import {
   verticalScale,
 } from '../../utils/Dimension';
 import {colors, fonts} from '../../utils/Theme';
-import { RFValue } from 'react-native-responsive-fontsize';
+import {RFValue} from 'react-native-responsive-fontsize';
 
 export const loyaltyCardStyle = StyleSheet.create({
   cardmain: {
@@ -28,8 +28,8 @@ export const loyaltyCardStyle = StyleSheet.create({
   },
   headingText: {
     fontFamily: fonts.SemiBold,
-    color:"#9db0bd",
-    fontSize:RFValue(14,667)
+    color: '#9db0bd',
+    fontSize: RFValue(14, 667),
   },
   Text: {
     fontFamily: fonts.SemiBold,
@@ -37,15 +37,14 @@ export const loyaltyCardStyle = StyleSheet.create({
   OrderNumber: {
     fontFamily: fonts.SemiBold,
     color: colors.black,
-    borderBottomWidth:1
+    borderBottomWidth: 1,
   },
-  dateView:{
-    fontFamily:fonts.Medium,
-    color:colors.black,
-    marginTop:verticalScale(5)
+  dateView: {
+    fontFamily: fonts.Medium,
+    color: colors.black,
+    marginTop: verticalScale(5),
   },
-  points:{
-    fontFamily:fonts.SemiBold,
-
-  }
+  points: {
+    fontFamily: fonts.SemiBold,
+  },
 });

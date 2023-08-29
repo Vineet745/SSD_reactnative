@@ -37,23 +37,22 @@ export default Forgotpasswordstyle = StyleSheet.create({
     fontSize: verticalScale(10),
   },
 
-  forgotView:{
-   alignItems:"flex-end",
-   padding:horizontalScale(10),
-   paddingVertical:verticalScale(5)
+  forgotView: {
+    alignItems: 'flex-end',
+    padding: horizontalScale(10),
+    paddingVertical: verticalScale(5),
   },
-  forgotText:{
-    fontFamily:fonts.SemiBold,
-    color:colors.skyblue
-  },
-
-  otpLogin:{
-alignItems:"center",
-justifyContent:"center",
-marginBottom:verticalScale(5)
+  forgotText: {
+    fontFamily: fonts.SemiBold,
+    color: colors.skyblue,
   },
 
-  
+  otpLogin: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: verticalScale(5),
+  },
+
   alreadyCustomer: {
     flexDirection: 'row',
     alignItems: 'center',

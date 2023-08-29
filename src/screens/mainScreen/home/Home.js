@@ -8,6 +8,8 @@ import ProductMain from '../../../components/productComponent/productMain/Produc
 import {useNavigation} from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { DrawerActions } from '@react-navigation/native';
+import CartIcon from '../../../navigation/component/CartIcon';
+import { horizontalScale } from '../../../utils/Dimension';
 
 
 const Home = ({navigation}) => {
@@ -30,9 +32,9 @@ const Home = ({navigation}) => {
             <TouchableOpacity>
               <Image source={require('../../../assets/images/icon_bell.png')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigate('My Cart')}>
-              <Image source={require('../../../assets/images/icon_cart.png')} />
-            </TouchableOpacity>
+            <View style={{marginLeft:horizontalScale(12)}}>
+           <CartIcon/>
+           </View>
             <TouchableOpacity onPress={()=>navigation.dispatch(DrawerActions.openDrawer())} >
               <Entypo name="menu" size={28} color="black" />
             </TouchableOpacity>

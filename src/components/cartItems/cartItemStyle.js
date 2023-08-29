@@ -25,13 +25,13 @@ export default cartItemStyle = StyleSheet.create({
   },
   detailHolder: {
     paddingLeft: horizontalScale(10),
-    height:verticalScale(100),
-    width:horizontalScale(230),
+    height: verticalScale(100),
+    width: horizontalScale(230),
   },
   titleText: {
     fontFamily: fonts.SemiBold,
     color: colors.black,
-    fontSize:RFValue(11.5,667)
+    fontSize: RFValue(11.5, 667),
   },
   productType: {
     color: '#5e7c91',
@@ -42,7 +42,7 @@ export default cartItemStyle = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: verticalScale(8),
-    width:horizontalScale(200),
+    width: horizontalScale(200),
     justifyContent: 'space-between',
   },
   MrpViewFirsttextContainer: {
@@ -51,19 +51,14 @@ export default cartItemStyle = StyleSheet.create({
   MrpText: {
     fontFamily: fonts.SemiBold,
     color: colors.black,
-    fontSize: RFValue(8.5, 667),
+    textDecorationLine:"line-through",
+    fontSize: RFValue(9, 667),
   },
-  strikeLine: {
-    borderTopWidth: 1,
-    borderColor: 'orange',
-    position: 'absolute',
-    bottom: verticalScale(5),
-    width: horizontalScale(60),
-  },
+  
   offerText: {
     fontFamily: fonts.SemiBold,
     color: '#faa045',
-    fontSize: RFValue(8.5, 667),
+    fontSize: RFValue(9, 667),
   },
   ourPrice: {
     flexDirection: 'row',
@@ -72,9 +67,9 @@ export default cartItemStyle = StyleSheet.create({
     justifyContent: 'space-between',
   },
   ourPriceText: {
-    fontFamily: fonts.Medium,
+    fontFamily: fonts.SemiBold,
     color: colors.black,
-    fontSize: RFValue(10, 667),
+    fontSize: RFValue(9, 667),
   },
   bottomWrapper: {
     flexDirection: 'row',

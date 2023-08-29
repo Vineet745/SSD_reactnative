@@ -14,13 +14,12 @@ const Report = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarInactiveTintColor:"black",
+        tabBarInactiveTintColor: 'black',
         tabBarLabelStyle: {
           fontFamily: fonts.Medium,
-          
         },
       }}>
-      <Tab.Screen name="Report an" component={ReportIssue}/>
+      <Tab.Screen name="Report an" component={ReportIssue} />
       <Tab.Screen name="Issue History" component={IssueHistory} />
       <Tab.Screen name="Contact Info" component={ContactInfo} />
     </Tab.Navigator>

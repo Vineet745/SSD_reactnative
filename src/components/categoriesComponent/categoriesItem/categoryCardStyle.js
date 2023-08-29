@@ -4,8 +4,8 @@ import {
   moderateScale,
   verticalScale,
 } from '../../../utils/Dimension';
-import { RFValue } from 'react-native-responsive-fontsize';
-import { fonts } from '../../../utils/Theme';
+import {RFValue} from 'react-native-responsive-fontsize';
+import {fonts} from '../../../utils/Theme';
 
 export default categoryCardStyle = StyleSheet.create({
   cardmain: {

@@ -9,10 +9,15 @@ import {getAllProducts} from '../../../service/api/ProductApi';
 const ProductMain = ({title, touchableButton}) => {
   const limit = 6;
   const [products, setProducts] = useState([]);
+
   const handleProducts = async () => {
     try {
       const {data} = await getAllProducts({limit});
-      setProducts(data?.data.data.data);
+      setProducts(
+        data?.data.data.data.map(p => {
+          return {...p, quantityCount: 0};
+        }),
+      );
     } catch (error) {
       console.log('products Error', error);
     }

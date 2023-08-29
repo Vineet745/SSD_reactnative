@@ -1,3 +1,4 @@
+import ViewPropTypes from 'deprecated-react-native-prop-types';
 import React, {useRef} from 'react';
 import {View, Text, Image} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
@@ -8,12 +9,10 @@ import {
 } from '../utils/Dimension';
 
 const SingleSwiper = ({Images}) => {
-  
   const carouselRef = useRef(null);
   const sliderWidth = horizontalScale(367);
   const itemWidth = horizontalScale(250);
   const renderItem = ({item, index}) => {
-    console.log("iterherek",item)
     return (
       <View
         style={{
@@ -25,9 +24,6 @@ const SingleSwiper = ({Images}) => {
           <Image source={item.file} style={{width: '100%', height: '100%'}} />
         </View>
       </View>
-
-    
-    
     );
   };
 
@@ -39,11 +35,12 @@ const SingleSwiper = ({Images}) => {
       sliderWidth={sliderWidth}
       itemWidth={itemWidth}
       inactiveSlideOpacity={1}
-      
     />
   );
 };
 
+SingleSwiper.propTypes = {
+  navigation: ViewPropTypes.navigation, // Using ViewPropTypes from the package
+};
+
 export default SingleSwiper;
-
-
