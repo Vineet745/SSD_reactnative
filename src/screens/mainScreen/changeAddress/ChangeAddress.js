@@ -4,13 +4,14 @@ import {ChangeAddressStyle} from './changeAddressStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import { getAllAddress } from '../../../service/api/UserApi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectedAddress } from '../../../redux/slice/authSlice';
 
 const ChangeAddress = ({route}) => {
   const {params:{userProfile}} = route
   const [address, setAddress] = useState([])
   
-
+const dispatch = useDispatch()
 
 
 
@@ -26,6 +27,7 @@ const ChangeAddress = ({route}) => {
     try {
       const {data} = await getAllAddress({userProfile})
       setAddress(data?.data)
+      dispatch(selectedAddress(data?.data[0]))
     } catch (error) {
       console.log("error",error)
     }

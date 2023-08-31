@@ -10,10 +10,13 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { DrawerActions } from '@react-navigation/native';
 import CartIcon from '../../../navigation/component/CartIcon';
 import { horizontalScale } from '../../../utils/Dimension';
+import { useSelector } from 'react-redux';
 
 
 const Home = ({navigation}) => {
   const {navigate} = useNavigation();
+  const {address} = useSelector(state=>state.user)
+  console.log("address",address)
   return (
     <View style={homeStyle.homemain}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -25,7 +28,7 @@ const Home = ({navigation}) => {
             />
             <Text style={{fontFamily: fonts.SemiBold, color: colors.black}}>
               {' '}
-              111/A Satyagrah Marg..
+              {address.address}
             </Text>
           </View>
           <View style={homeStyle.locationHolderRight}>

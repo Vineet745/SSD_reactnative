@@ -8,7 +8,8 @@ import { useNavigation } from '@react-navigation/native';
 
 const MyOrder = () => {
   const [orderData, setOrderData] = useState([]);
-  const [singleOrderData,setsingleOrderData] = useState('')
+  const [singleOrderData,setsingleOrderData] = useState(null)
+
 const navigation = useNavigation();
 
   // Get all orders
@@ -23,22 +24,27 @@ const navigation = useNavigation();
 
   useEffect(() => {
     handleGetAllOrders();
-  }, []);
+  }, [orderData]);
 
 
   // Single Orders
 
-  const handleSingleOrder = async(orderId)=>{
-    
+  const handleSingleOrder = async()=>{
     try {
-      const {data} = await getSingleOrder(orderId)
-      setsingleOrderData(data?.data?.data[0])
-   } catch (error) {
-    console.log("error",error)
-  }
-  }
+  const {data} = await getSingleOrder(orderId)
+  setsingleOrderData(data?.data?.data[0])
 
- 
+} catch (error) {
+console.log("error",error)
+}
+}
+
+useEffect(() => {
+handleSingleOrder()
+}, [])
+
+
+
   
 
   return (
@@ -50,9 +56,7 @@ const navigation = useNavigation();
         renderItem={({item, index}) => (
           <TouchableOpacity
             onPress={() =>{
-              handleSingleOrder(item?.total_products[0]?.order_id);
-              navigation.navigate('Orders', {singleOrderData});
-
+              navigation.navigate('Orders', {singleOrderData:singleOrderData });
             }
             }
               

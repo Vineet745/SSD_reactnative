@@ -5,6 +5,7 @@ import {
   TextInput,
   ScrollView,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import checkOutStyle from './checkOutStyle';
@@ -30,12 +31,14 @@ const CheckOutPage = ({route}) => {
   const [schedule, setSchedule] = useState([]);
   const [selectedSchedule, setSelectedSchedule] = useState('');
   const [mobileNumber, setMobileNumber] = useState();
+
   // const [loyaltyPoints, setLoyaltyPointx
   const [payment, setPayment] = useState();
   const [visible, setVisible] = useState(false);
 
   const {navigate} = useNavigation();
   const {selectedDate} = useSelector(state => state.order);
+  const {address} = useSelector(state=>state.user)
 
   // Toggle Modal
 
@@ -107,8 +110,12 @@ const CheckOutPage = ({route}) => {
         selectedSchedule,
         selectedDate,
       });
+
+      Alert.alert("Order Placed Successfully")
+      navigate("My Orders")
     } catch (error) {
-      console.log(error);
+      console.log(error.data);
+      Alert.alert("Error in Creating Order")
     }
   };
 
@@ -130,8 +137,7 @@ const CheckOutPage = ({route}) => {
 
           <View style={checkOutStyle.address}>
             <Text style={checkOutStyle.addressText}>
-              {/* 111/A Satyagarh Marg Colony, Phase IV, Near Hanuman Mandir, Prayag
-              Raaj, Uttar Pradesh - 110223 */}
+              {address?.address}
             </Text>
           </View>
         </View>

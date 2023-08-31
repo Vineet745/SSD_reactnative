@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, Image, ScrollView, Modal, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  Modal,
+  ActivityIndicator,
+} from 'react-native';
 import {
   horizontalScale,
   moderateScale,
@@ -10,86 +18,119 @@ import singleProductStyle from './singleProductStyle';
 import SingleSwiper from '../../../components/SingleSwiper';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {getSingleProduct} from '../../../service/api/ProductApi';
-import { addCart, getCart } from '../../../service/api/CartApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { decrement, increment, setSelectedProduct, singleProductAdd } from '../../../redux/slice/counterSlice';
-import { cartlength } from '../../../redux/slice/cartSlice';
+import {addCart, getCart} from '../../../service/api/CartApi';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  decrement,
+  increment,
+  setSelectedProduct,
+  singleProductAdd,
+} from '../../../redux/slice/counterSlice';
 
 const SingleProduct = ({route, navigation}) => {
-
-  const {selectedProduct} = useSelector(state=>state.counter)
-
-  const {params: {productId}} = route;
-  const dispatch = useDispatch()
-
+  const {selectedProduct} = useSelector(state => state.counter);
+  const dispatch = useDispatch();
+  
   const [singledata, setSingledata] = useState('');
-  const [loading, setloading] = useState(false)
+  const [loading, setloading] = useState(false);
+  const [price, setPrice] = useState(0);
 
-   useEffect(() => {
-    handleGetSingleProduct();
-  }, []);
+
+  const {
+    params: {productId},
+  } = route;
 
 
   // Get SingleProduct
 
+  useEffect(() => {
+    handleGetSingleProduct();
+  }, []);
+
+  // /////////////////////////////////////////////////////////////////////////////////////
+
   const handleGetSingleProduct = async () => {
     try {
-      setloading(true)
+      setloading(true);
       const {data} = await getSingleProduct(productId);
       setSingledata(data?.data?.data[0]);
-      setloading(false)
+      setloading(false);
     } catch (error) {
       console.log('error', error);
-      setloading(false)
+      setloading(false);
       throw error;
     }
   };
 
+  // Check Product Slab
+console.log("singledata",JSON.stringify(singledata))
 
+  const productSlab = singledata.inventoriess?.[0]?.transaction?.purchase_data?.product_slab;
 
+  const calculatePrice = () => {
+    let price = 0;
 
-// Add to cart
-
-
-
-const handleAddToCart = async()=>{
-  try {
-
-    const userdata = {
-      batch_number:singledata.inventoriess?.[0]?.batch_id,
-      inventory_id:singledata.inventoriess?.[0]?.transaction?.inventory_id,
-      quantity:selectedProduct.quantity,
-      quantity_count:selectedProduct.quantity,
-      priceable_quantity:selectedProduct.quantity,
-      price:singledata?.inventoriess?.[0]?.transaction.purchase_data?.default_price,
-      unit_price:singledata?.inventoriess?.[0]?.transaction.purchase_data?.default_price,
-      product_type:singledata.packing_type,
-      product_type_id:singledata.inventoriess?.[0]?.transaction?.purchase_id,
-      unit_quantity:selectedProduct.quantity,
-      slab_id: singledata.inventoriess?.[0]?.transaction?.purchase_data?.product_slab,
-      type:"ONLINE"
-
+    if (productSlab) {
+      productSlab.forEach(item => {
+        if (
+          selectedProduct.quantity >= item.slab_min_value &&
+          (item.slab_max_value === 0 ||
+            selectedProduct.quantity <= item.slab_max_value)
+        ) {
+          price = item.selling_price;
+        }
+      });
     }
-    const data = await addCart({userdata})
-    dispatch(singleProductAdd(data?.data?.data))
-  } catch (error) {
-    console.log(error)
-  }
-}
+    return price;
+  };
 
 
-// const Mrp = singledata?.inventoriess[0]?.transaction?.purchase_data?.mrp
+  useEffect(() => {
+    const calculatedPrice = calculatePrice();
+    setPrice(calculatedPrice);
+  }, [selectedProduct.quantity]);
+
+
+
+
+// const slagablePrice = {productSlab?}
+
+
+  // Add to cart
+
+  const handleAddToCart = async () => {
+    try {
+      const userdata = {
+        batch_number: singledata.inventoriess?.[0]?.batch_id,
+        inventory_id: singledata.inventoriess?.[0]?.transaction?.inventory_id,
+        quantity: selectedProduct.quantity,
+        quantity_count: selectedProduct.quantity,
+        priceable_quantity: selectedProduct.quantity,
+        price: price ? price : singledata?.inventoriess?.[0]?.transaction.purchase_data?.default_price,
+        unit_price: price ? price : singledata?.inventoriess?.[0]?.transaction.purchase_data?.default_price,
+        product_type: singledata.packing_type,
+        product_type_id: singledata.inventoriess?.[0]?.transaction?.purchase_id,
+        unit_quantity: selectedProduct.quantity,
+        slab_id: singledata.inventoriess?.[0]?.transaction?.purchase_data ?.product_slab,
+        type: 'ONLINE',
+      };
+      const data = await addCart({userdata});
+      console.log('Adddata', data.data.data);
+      dispatch(singleProductAdd(data?.data?.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const Mrp = singledata?.inventoriess[0]?.transaction?.purchase_data?.mrp
   return (
     <ScrollView>
-
       {/* //Modal */}
       <Modal visible={loading} transparent={true} animationType="none">
         <View style={categoriesScreenStyle.modalContainer}>
           <ActivityIndicator size="large" color="blue" />
         </View>
       </Modal>
-
-
 
       {/* 1st View */}
       <View style={{flex: 1}}>
@@ -123,9 +164,9 @@ const handleAddToCart = async()=>{
           <View style={singleProductStyle.leftView}>
             <View style={singleProductStyle.price_offer}>
               <Text style={singleProductStyle.price_offer_textone}>
-              M.R.P.: ₹ {singledata?.inventoriess?.[0]?.transaction?.purchase_data?.mrp}
+                M.R.P.: ₹{' '}
+                {singledata?.inventoriess?.[0]?.transaction?.purchase_data?.mrp}
               </Text>
-              
 
               <Text style={singleProductStyle.price_offer_Discount}>
                 20% Off
@@ -136,11 +177,15 @@ const handleAddToCart = async()=>{
                 singleProductStyle.price_offer_textone,
                 {marginTop: verticalScale(5), fontSize: RFValue(14, 667)},
               ]}>
-              Our Price: ₹ {singledata?.inventoriess?.[0]?.transaction?.purchase_data?.default_price}
+              Our Price: ₹{' '}
+              {
+                singledata?.inventoriess?.[0]?.transaction?.purchase_data
+                  ?.default_price
+              }
             </Text>
           </View>
           <View style={singleProductStyle.quantityWrapper}>
-            <TouchableOpacity onPress={()=>dispatch(decrement(productId))}>
+            <TouchableOpacity onPress={() => dispatch(decrement(productId))}>
               <Image
                 style={{
                   width: horizontalScale(30),
@@ -153,9 +198,10 @@ const handleAddToCart = async()=>{
               style={{fontFamily: fonts.SemiBold, fontSize: RFValue(14, 667)}}>
               {selectedProduct.quantity}
             </Text>
-            <TouchableOpacity onPress={()=>{
-              dispatch(increment(productId)) 
-            }}>
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(increment(productId));
+              }}>
               <Image
                 style={{
                   width: horizontalScale(30),
@@ -200,9 +246,14 @@ const handleAddToCart = async()=>{
           </Text>
         </View>
         <View>
-        <TouchableOpacity onPress={()=>handleAddToCart()} activeOpacity={1} style={singleProductStyle.Addbutton}>
-          <Text style={{color:colors.white,fontFamily:fonts.Bold}}>Add to cart</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleAddToCart()}
+            activeOpacity={1}
+            style={singleProductStyle.Addbutton}>
+            <Text style={{color: colors.white, fontFamily: fonts.Bold}}>
+              Add to cart
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

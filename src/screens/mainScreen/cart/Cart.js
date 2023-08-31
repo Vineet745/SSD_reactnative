@@ -16,6 +16,8 @@ const Cart = () => {
   const [total,setTotal] = useState()
 
 
+
+  // console.log("Cart",cart)
   // Get Cart Items
   const {navigate} = useNavigation();
 
@@ -57,12 +59,13 @@ const Cart = () => {
             </Text>
           </TouchableOpacity>
         </View>
+        
         <FlatList
           showsVerticalScrollIndicator={false}
           data={cart}
           keyExtractor={(item, index) => index}
-          renderItem={({item, index}) => (
-            
+          renderItem={({item, index}) => ( 
+                 
               <CartItem item={item} />
           )}
         />

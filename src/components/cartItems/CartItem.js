@@ -12,12 +12,12 @@ import { increment,decrement} from '../../redux/slice/counterSlice';
 import { RFValue } from 'react-native-responsive-fontsize';
 const CartItem = ({item}) => {
   // Getting Product count from the Redux
+  // console.log("item",JSON.stringify(item))
   
 const defaultPrice = item?.inventories?.transaction?.purchase_data?.default_price
 const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
 
-
-
+// console.log("item",JSON.stringify(item))
 
   const productId = item.product_id;
   const id = item.id;
@@ -35,13 +35,27 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
     }
   };
 
+  // Quantity Increment
+
+  const increment = () => {
+    const updatedQuantity = item.quantity += 1
+    console.log("updatedQuantity",updatedQuantity)
+  };
+
   // Quantity Decrement
 
-  const decrement = productId => {
+  const decrement = () => {
     if (item.quantityCount > 1) {
-      dispatch(decrement(productId));
+     const updatedQuantity =  item.quantity -= 1;
+     console.log("updatedQuantity",updatedQuantity)
     }
   };
+
+// Check Slab
+
+
+
+
 
   return (
     <View style={cartItemStyle.cartItemMain}>
@@ -78,7 +92,7 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
               <Text style={cartItemStyle.MrpText}>M.R.P. : ₹ {Mrp}</Text>
             </View>
             <Text style={cartItemStyle.offerText}> 20% Off</Text>
-            <Text style={cartItemStyle.ourPriceText}>Our Price: ₹ {defaultPrice}</Text>
+            <Text style={cartItemStyle.ourPriceText}>Our Price: ₹ {item.price}</Text>
           </View>
 
           {/* Border View */}
@@ -93,7 +107,7 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
 
           <View style={cartItemStyle.bottomWrapper}>
             <View style={cartItemStyle.quantityWrapper}>
-              <TouchableOpacity onPress={() => dispatch(decrement(productId))}>
+              <TouchableOpacity onPress={decrement}>
                 <Image
                   style={{
                     width: horizontalScale(25),
@@ -107,7 +121,7 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
                 {item.quantity}
                 {/* {item.quantityCount?item.quantityCount:item.quantity} */}
               </Text>
-              <TouchableOpacity onPress={() => dispatch(increment(productId))}>
+              <TouchableOpacity onPress={increment}>
                 <Image
                   style={{
                     width: horizontalScale(25),
@@ -121,7 +135,7 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
             <TouchableOpacity style={{marginLeft: verticalScale(5)}}>
               <AntDesign name="close" size={15} />
             </TouchableOpacity>
-            <Text style={{fontFamily: fonts.SemiBold,fontSize:RFValue(11,667)}}> ₹ {defaultPrice} =  </Text>
+            <Text style={{fontFamily: fonts.SemiBold,fontSize:RFValue(11,667)}}> ₹ {item.price} =  </Text>
             <Text style={{fontFamily: fonts.SemiBold,fontSize:RFValue(11,667)}}>
             {item.total_price}
             </Text>

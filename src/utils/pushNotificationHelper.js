@@ -1,32 +1,52 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 
-async function requestUserPermission() {
-  const authStatus = await messaging().requestPermission();
-  const enabled =
-    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-  if (enabled) {
-    console.log('Authorization status:', authStatus);
-    GetFCMToken()
-  }
-}
 
 
-const GetFCMToken=async()=>{
-    let fcmtoken =await AsyncStorage.getItem("fcmtoken")
-    console.log(fcmtoken,"old token")
-    if(!fcmtoken){
-
-        try {
-            let fcmtoken = messaging().getToken();
-            if(fcmtoken){
-               await AsyncStorage.setItem("fcmtoken",fcmtoken)
-            }
-            
-        } catch (error) {
-            console.log(error,"error in fcmtoken")
-        }
+export async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
     }
+  }
+
+
+  
+  
+
+
+export const notificationListener = ()=>{
+
+    // Background Messaging
+
+    messaging().onNotificationOpenedApp(remoteMessage => {
+        console.log(
+          'Notification caused app to open from background state:',
+          remoteMessage.notification,
+        );
+      });
+
+
+
+//   Messaging when the App is not in running mode (Kill mode)
+      // Check whether an initial notification is available
+      messaging()
+        .getInitialNotification()
+        .then(remoteMessage => {
+          if (remoteMessage) {
+            console.log(
+              'Notification caused app to open from quit state:',
+              remoteMessage.notification,
+            );
+          }
+        });
 }
+
+export const getToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
+    const token = await messaging().getToken();
+    console.log("token",token) 
+};
