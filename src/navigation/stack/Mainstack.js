@@ -29,12 +29,10 @@ import CustomHeader from '../component/CustomHeader';
 import Categorydata from '../../screens/mainScreen/categoryData/Categorydata';
 import SearchScreen from '../../screens/searchScreen/SearchScreen';
 import CartIcon from '../component/CartIcon';
-import { useSelector } from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 
 const Drawer = createDrawerNavigator();
-
 
 //Stack with Search Tab
 
@@ -65,13 +63,13 @@ const SearchStack = () => {
         <Stack.Screen
           name="Category_data"
           component={Categorydata}
-          options={({ route }) => ({
+          options={({route}) => ({
             title: route.params.categoryName,
-            headerRight: () => (
-              <CartIcon/>
-            ),
+            headerRight: () => <CartIcon />,
           })}
         />
+       
+      
       </Stack.Navigator>
     </View>
   );
@@ -112,7 +110,7 @@ const Drawerstack = () => {
               <Image source={require('../../assets/images/icon_order.png')} />
             );
           },
-          
+
           header: () => {
             return <CustomHeader headerText="My Orders" iconname="filter" />;
           },

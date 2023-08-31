@@ -1,4 +1,4 @@
-import {View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, FlatList, Modal, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import cartStyle from './cartStyle';
 import {colors, fonts} from '../../../utils/Theme';
@@ -8,40 +8,59 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {getCart} from '../../../service/api/CartApi';
 import {useDispatch, useSelector} from 'react-redux';
 import { cartlength, setCartProducts } from '../../../redux/slice/cartSlice';
+import Loader from '../../../utils/Loader';
 
 const Cart = () => {
+  
   const dispatch = useDispatch();
   const isfocused = useIsFocused();
   const [cart, setCart] = useState([])
   const [total,setTotal] = useState()
+  const [loading, setloading] = useState(false);
 
 
 
-  // console.log("Cart",cart)
+
   // Get Cart Items
   const {navigate} = useNavigation();
 
+
+
+  // Get Cart
+
   const handleGetCart = async () => {
     try {
+      setloading(true)
       const {data} = await getCart('ONLINE')
       setTotal(data?.total_amount)
       setCart(data?.data?.data)
       dispatch(setCartProducts(data?.data?.data))
+      setloading(false)
     } catch (error) {
       console.log('error', error);
+      setloading(false)
       throw error;
     }
   }; 
 
   useEffect(() => {
       handleGetCart();
-      dispatch(cartlength(cart.length));
   }, [cart]);
+
+
+
+
 
 
 
   return (
     <View style={{flex: 1, backgroundColor: colors.white}}>
+      {/* Loader */}
+
+    <Loader loading={loading}/>
+
+
+
       <View style={cartStyle.cartOffer}>
         <Text style={cartStyle.cartOfferText}>
           Add Items of at least ₹ 175.50 more to get FREE DELIVERY!

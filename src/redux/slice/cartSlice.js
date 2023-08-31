@@ -12,12 +12,14 @@ export const cartSlice = createSlice({
     //     item => item.product_id === action.payload,
     //   );
 
-    //   product.quantityCount += 1;
+    //   product.quantity += 1;
     //   const productIndex = state.cartProducts.findIndex(
     //     item => item.product_id === action.payload,
     //   );
     //   state.cartProducts[productIndex] = product;
     // },
+
+
     // cartdecrement: (state, action) => {
     //   const product = state.cartProducts.find(
     //     item => item.product_id === action.payload,

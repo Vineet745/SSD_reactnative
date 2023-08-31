@@ -5,10 +5,13 @@ import {fonts} from '../../../utils/Theme';
 import {verticalScale} from '../../../utils/Dimension';
 import {getAllOrders, getSingleOrder} from '../../../service/api/OrderApi';
 import { useNavigation } from '@react-navigation/native';
+import Loader from '../../../utils/Loader';
 
 const MyOrder = () => {
   const [orderData, setOrderData] = useState([]);
   const [singleOrderData,setsingleOrderData] = useState(null)
+  const [loading, setloading] = useState(false) 
+
 
 const navigation = useNavigation();
 
@@ -49,6 +52,7 @@ handleSingleOrder()
 
   return (
     <View style={myOrderStyle.wholePage}>
+      <Loader loading={loading}/>
       <FlatList
         showsVerticalScrollIndicator={false}
         data={orderData}
@@ -56,7 +60,7 @@ handleSingleOrder()
         renderItem={({item, index}) => (
           <TouchableOpacity
             onPress={() =>{
-              navigation.navigate('Orders', {singleOrderData:singleOrderData });
+              navigation.navigate('Orders', {item:item});
             }
             }
               

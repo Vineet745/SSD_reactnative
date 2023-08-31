@@ -5,8 +5,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Modal,
-  ActivityIndicator,
+  Alert
 } from 'react-native';
 import {
   horizontalScale,
@@ -26,22 +25,25 @@ import {
   setSelectedProduct,
   singleProductAdd,
 } from '../../../redux/slice/counterSlice';
+import {setCartProducts} from '../../../redux/slice/cartSlice';
+import Loader from '../../../utils/Loader';
 
 const SingleProduct = ({route, navigation}) => {
   const {selectedProduct} = useSelector(state => state.counter);
   const dispatch = useDispatch();
-  
+
   const [singledata, setSingledata] = useState('');
   const [loading, setloading] = useState(false);
   const [price, setPrice] = useState(0);
-
+  const [cart, setCart] = useState([]);
+  const images = require("../../../assets/images/product_img.png")
 
   const {
     params: {productId},
   } = route;
 
 
-  // Get SingleProduct
+  // Get Single Product
 
   useEffect(() => {
     handleGetSingleProduct();
@@ -62,10 +64,32 @@ const SingleProduct = ({route, navigation}) => {
     }
   };
 
-  // Check Product Slab
-console.log("singledata",JSON.stringify(singledata))
 
-  const productSlab = singledata.inventoriess?.[0]?.transaction?.purchase_data?.product_slab;
+
+
+//  Cart
+
+
+  const handleGetCart = async () => {
+    try {
+      const {data} = await getCart('ONLINE');
+      setCart(data?.data?.data);
+      dispatch(setCartProducts(data?.data?.data));
+    } catch (error) {
+      console.log('error', error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    handleGetCart()
+  }, [])
+  
+
+  // Check Product Slab
+
+  const productSlab =
+    singledata.inventoriess?.[0]?.transaction?.purchase_data?.product_slab;
 
   const calculatePrice = () => {
     let price = 0;
@@ -84,16 +108,14 @@ console.log("singledata",JSON.stringify(singledata))
     return price;
   };
 
-
   useEffect(() => {
     const calculatedPrice = calculatePrice();
     setPrice(calculatedPrice);
   }, [selectedProduct.quantity]);
 
+  // const slagablePrice = {productSlab?}
 
 
-
-// const slagablePrice = {productSlab?}
 
 
   // Add to cart
@@ -106,36 +128,64 @@ console.log("singledata",JSON.stringify(singledata))
         quantity: selectedProduct.quantity,
         quantity_count: selectedProduct.quantity,
         priceable_quantity: selectedProduct.quantity,
-        price: price ? price : singledata?.inventoriess?.[0]?.transaction.purchase_data?.default_price,
-        unit_price: price ? price : singledata?.inventoriess?.[0]?.transaction.purchase_data?.default_price,
+        price: price
+          ? price
+          : singledata?.inventoriess?.[0]?.transaction.purchase_data
+              ?.default_price,
+        unit_price: price
+          ? price
+          : singledata?.inventoriess?.[0]?.transaction.purchase_data
+              ?.default_price,
         product_type: singledata.packing_type,
         product_type_id: singledata.inventoriess?.[0]?.transaction?.purchase_id,
         unit_quantity: selectedProduct.quantity,
-        slab_id: singledata.inventoriess?.[0]?.transaction?.purchase_data ?.product_slab,
+        slab_id:
+          singledata.inventoriess?.[0]?.transaction?.purchase_data
+            ?.product_slab,
         type: 'ONLINE',
       };
       const data = await addCart({userdata});
-      console.log('Adddata', data.data.data);
+      handleGetCart();
       dispatch(singleProductAdd(data?.data?.data));
     } catch (error) {
       console.log(error);
     }
   };
 
-  // const Mrp = singledata?.inventoriess[0]?.transaction?.purchase_data?.mrp
+
+// Check Product In cart
+
+
+const handleCheckCart = () => {
+  let isProductInCart = false;
+
+  cart.forEach((item) => {
+    if (item.product_id === singledata.id) {
+      isProductInCart = true;
+    }
+  });
+
+  if (isProductInCart) {
+    Alert.alert('Item is already in the cart');
+  } else {
+    handleAddToCart();
+  }
+};
+
+
+
+
   return (
     <ScrollView>
-      {/* //Modal */}
-      <Modal visible={loading} transparent={true} animationType="none">
-        <View style={categoriesScreenStyle.modalContainer}>
-          <ActivityIndicator size="large" color="blue" />
-        </View>
-      </Modal>
+      
+      {/* //Loader */}
+
+      <Loader loading={loading}/>
 
       {/* 1st View */}
       <View style={{flex: 1}}>
         <View style={{paddingVertical: verticalScale(10)}}>
-          <SingleSwiper Images={singledata?.file} />
+          <SingleSwiper Images={images} />
         </View>
 
         <View
@@ -247,7 +297,7 @@ console.log("singledata",JSON.stringify(singledata))
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => handleAddToCart()}
+            onPress={() => handleCheckCart()}
             activeOpacity={1}
             style={singleProductStyle.Addbutton}>
             <Text style={{color: colors.white, fontFamily: fonts.Bold}}>

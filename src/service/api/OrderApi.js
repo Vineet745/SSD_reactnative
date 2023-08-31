@@ -25,7 +25,6 @@ export const getOrderSchedule = async () => {
 // Create Order
 
 export const createOrder = async (userdata) => {
-  console.log("userdata",userdata)
   const token = await AsyncStorage.getItem('TOKEN');
   const formData = new FormData()
   formData.append("total_amount",userdata.total)

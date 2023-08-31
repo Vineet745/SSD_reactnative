@@ -13,7 +13,8 @@ import {getCart} from '../../service/api/CartApi';
 
 const CartIcon = () => {
   const {navigate} = useNavigation();
-  const {length} = useSelector(state => state.cart);
+  const {cartProducts} = useSelector(state => state.cart);
+  // console.log("cartProducts",cartProducts.length)
 
   return (
     <View>
@@ -40,7 +41,7 @@ const CartIcon = () => {
             fontFamily: fonts.Bold,
             color: colors.white,
           }}>
-          {length}
+        {cartProducts.length}
         </Text>
       </View>
     </View>

@@ -9,7 +9,7 @@ export const counterSlice = createSlice({
   },
   reducers: {
     setSelectedProduct: (state, action) => {
-      state.selectedProduct = {...action.payload, quantity: 0};
+      state.selectedProduct = {...action.payload, quantity: 1};
     },
 
     increment: (state, action) => {

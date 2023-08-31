@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import cartItemStyle from './cartItemStyle';
 import {fonts} from '../../utils/Theme';
 import {horizontalScale, verticalScale} from '../../utils/Dimension';
@@ -7,13 +7,12 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {deleteSingleCartItem} from '../../redux/slice/cartSlice';
-import {deleteCart} from '../../service/api/CartApi';
-import { increment,decrement} from '../../redux/slice/counterSlice';
+import {deleteCart, updateCart} from '../../service/api/CartApi';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { decrement } from '../../redux/slice/counterSlice';
 const CartItem = ({item}) => {
-  // Getting Product count from the Redux
-  // console.log("item",JSON.stringify(item))
-  
+  const [updated, setUpdated] = useState('')
+  const [localQuantity, setLocalQuantity] = useState(item.quantity);
 const defaultPrice = item?.inventories?.transaction?.purchase_data?.default_price
 const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
 
@@ -21,8 +20,9 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
 
   const productId = item.product_id;
   const id = item.id;
-  const {navigate} = useNavigation();
+  const {navigate} = useNavigation();  
   const dispatch = useDispatch();
+
 
   // Delete Single Cart Item
 
@@ -37,24 +37,44 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
 
   // Quantity Increment
 
-  const increment = () => {
-    const updatedQuantity = item.quantity += 1
-    console.log("updatedQuantity",updatedQuantity)
-  };
-
-  // Quantity Decrement
-
-  const decrement = () => {
-    if (item.quantityCount > 1) {
-     const updatedQuantity =  item.quantity -= 1;
-     console.log("updatedQuantity",updatedQuantity)
-    }
-  };
-
-// Check Slab
 
 
+// Cart Update
 
+const handleCartUpdate = async()=>{
+  try {
+    const userData = {
+      cart_id : item?.id,
+      quantity: item.quantity ,
+      priceable_quantity: item.priceable_quantity,
+      slab_id: item.slab_id || 0,
+      quantity_count: item.quantity_count
+    } 
+  const {data} = await updateCart(userData)
+  setUpdated(data?.data)
+  
+}catch (error) {
+  console.log("error",error.message)
+}
+}
+
+useEffect(() => {
+  handleCartUpdate()
+}, [])
+
+
+// Increment
+
+const Increment = () => {
+  setLocalQuantity(localQuantity + 1)
+  
+}
+
+// Decrement
+
+const decrement = ()=>{
+  setLocalQuantity(localQuantity - 1)
+}
 
 
   return (
@@ -107,7 +127,7 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
 
           <View style={cartItemStyle.bottomWrapper}>
             <View style={cartItemStyle.quantityWrapper}>
-              <TouchableOpacity onPress={decrement}>
+              <TouchableOpacity onPress={()=>decrement()}>
                 <Image
                   style={{
                     width: horizontalScale(25),
@@ -118,10 +138,9 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
               </TouchableOpacity>
 
               <Text style={{fontFamily: fonts.SemiBold}}>
-                {item.quantity}
-                {/* {item.quantityCount?item.quantityCount:item.quantity} */}
+                {localQuantity}
               </Text>
-              <TouchableOpacity onPress={increment}>
+              <TouchableOpacity onPress={()=>Increment()}>
                 <Image
                   style={{
                     width: horizontalScale(25),
@@ -137,7 +156,7 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
             </TouchableOpacity>
             <Text style={{fontFamily: fonts.SemiBold,fontSize:RFValue(11,667)}}> ₹ {item.price} =  </Text>
             <Text style={{fontFamily: fonts.SemiBold,fontSize:RFValue(11,667)}}>
-            {item.total_price}
+            {localQuantity * item.price}
             </Text>
           </View>
         </View>

@@ -38,7 +38,8 @@ const CheckOutPage = ({route}) => {
 
   const {navigate} = useNavigation();
   const {selectedDate} = useSelector(state => state.order);
-  const {address} = useSelector(state=>state.user)
+  // const {address} = useSelector(state=>state.user)
+  
 
   // Toggle Modal
 
@@ -137,7 +138,7 @@ const CheckOutPage = ({route}) => {
 
           <View style={checkOutStyle.address}>
             <Text style={checkOutStyle.addressText}>
-              {address?.address}
+              H.no-181 Suraj Nagar
             </Text>
           </View>
         </View>

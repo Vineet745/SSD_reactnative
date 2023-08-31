@@ -17,6 +17,7 @@ import {
 } from '../../../service/api/UserApi';
 import { useDispatch, useSelector} from 'react-redux';
 import {selectedCityId, selectedStateId} from '../../../redux/slice/authSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ConfirmAddress = ({route,navigation}) => {
   const dispatch = useDispatch()
@@ -82,8 +83,8 @@ const ConfirmAddress = ({route,navigation}) => {
         {address, landmark, pincode, stateId, cityId},
         userProfile,
       );
+      await AsyncStorage.setItem("address",address)
       navigation.navigate("Change Address")
-
     } catch (error) {
       console.log('error', error);
     }

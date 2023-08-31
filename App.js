@@ -33,7 +33,7 @@ const handleGetCart = async () => {
   try {
     const {data} = await getCart('ONLINE')
     setCart(data?.data?.data)  
-    // dispatch(setCartProducts(data?.data?.data))  
+    dispatch(setCartProducts(data?.data?.data))  
   } catch (error) {
     console.log('error', error);
     throw error;

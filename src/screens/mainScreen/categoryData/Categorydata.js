@@ -4,10 +4,12 @@ import ProductCard from '../../../components/productComponent/productsCard/Produ
 import {getAllProducts} from '../../../service/api/ProductApi';
 import {colors} from '../../../utils/Theme';
 import {horizontalScale, verticalScale} from '../../../utils/Dimension';
+import Loader from '../../../utils/Loader';
 
 const Categorydata = ({route}) => {
   const [categoryProduct, setCategoryProduct] = useState([]);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false)
 
   const {category} = route.params;
   const limit = 150;
@@ -18,6 +20,7 @@ const Categorydata = ({route}) => {
 
   const handleProducts = async () => {
     try {
+      setLoading(true)
       const {data} = await getAllProducts({category, limit});
       if (categoryProduct.length > 0) {
         setCategoryProduct(prevProducts => [
@@ -25,8 +28,10 @@ const Categorydata = ({route}) => {
           ...data?.data?.data.data,
         ]);
         setPage(prevPage => prevPage + 1);
+        setLoading(false)
       } else {
         setCategoryProduct(data?.data?.data.data);
+        setLoading(false)
       }
     } catch (error) {
       console.log('products Error', error);
@@ -41,6 +46,7 @@ const Categorydata = ({route}) => {
         paddingVertical: verticalScale(12),
         paddingHorizontal: horizontalScale(15),
       }}>
+        <Loader loading={loading}/>
       <FlatList
         showsVerticalScrollIndicator={false}
         data={categoryProduct}

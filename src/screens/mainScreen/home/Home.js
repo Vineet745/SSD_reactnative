@@ -1,5 +1,5 @@
 import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import {colors, fonts} from '../../../utils/Theme';
 import homeStyle from './homeStyle';
 import CustomSwiper from '../../../components/CustomSwiper';
@@ -11,12 +11,29 @@ import { DrawerActions } from '@react-navigation/native';
 import CartIcon from '../../../navigation/component/CartIcon';
 import { horizontalScale } from '../../../utils/Dimension';
 import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Home = ({navigation}) => {
   const {navigate} = useNavigation();
-  const {address} = useSelector(state=>state.user)
-  console.log("address",address)
+ const [address, setAddress] = useState()
+
+const fetchAddress = async()=> {
+    try {
+      const addressfetch = await AsyncStorage.getItem('address');
+       setAddress(addressfetch)
+    } catch (error) {
+      console.error('Error fetching address:', error);
+    }
+  }
+
+
+  useEffect(() => {
+    fetchAddress()
+  }, [])
+  
+  console.log("Address",address)
+
   return (
     <View style={homeStyle.homemain}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -26,9 +43,8 @@ const Home = ({navigation}) => {
               style={{width: 25, height: 25}}
               source={require('../../../assets/images/icon_gps.png')}
             />
-            <Text style={{fontFamily: fonts.SemiBold, color: colors.black}}>
-              {' '}
-              {address.address}
+            <Text style={{fontFamily: fonts.SemiBold, color: colors.black,marginLeft:horizontalScale(5)}}>
+              H.no - 181 Suraj Nagar
             </Text>
           </View>
           <View style={homeStyle.locationHolderRight}>

@@ -4,8 +4,11 @@ import OrderedItem from '../../../../components/orderdItem/OrderedItem';
 import {horizontalScale, verticalScale} from '../../../../utils/Dimension';
 
 const Items = ({route}) => {
-  // const {params:{singleOrderData}} = route;
-  // const products = singleOrderData ? singleOrderData.total_products : [];
+  const {params:{singledata}} = route;
+  const products = singledata ? singledata.total_products : [];
+
+
+  
 
 
   return (
@@ -18,7 +21,7 @@ const Items = ({route}) => {
       }}>
       <FlatList
           showsVerticalScrollIndicator={false}
-          // data={products}
+          data={products}
           keyExtractor={(item, index) => index}
           renderItem={({item, index}) => (         
               <OrderedItem item={item} />

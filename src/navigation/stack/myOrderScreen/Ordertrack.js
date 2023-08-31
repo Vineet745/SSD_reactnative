@@ -10,12 +10,30 @@ import { getSingleOrder } from '../../../service/api/OrderApi';
 const Tab = createMaterialTopTabNavigator();
 
 const Ordertrack = ({route}) => {
-  
-  console.log("singleOrderData",route)
+  const {params:{item}} = route
+  const [singleOrder, setSingleOrder] = useState('')
+
 
 // Getting single order Data
 
-  
+const handleSingleOrder = async()=>{
+  try {
+const {data} = await getSingleOrder(item.id)
+setSingleOrder(data?.data?.data[0])
+
+} catch (error) {
+console.log("error",error)
+}
+}
+
+useEffect(() => {
+handleSingleOrder()
+}, [])
+
+
+if(!singleOrder){
+  return null
+}
 
   
   return (
@@ -25,9 +43,9 @@ const Ordertrack = ({route}) => {
           fontFamily: fonts.SemiBold,
         },
       }}>
-      <Tab.Screen name="Order Info" component={OrderInfo}  />
-      <Tab.Screen name="Payment Info" component={PaymentInfo}  />
-      <Tab.Screen name="Items" component={Items} />
+      <Tab.Screen name="Order Info" component={OrderInfo}  initialParams={{singledata :singleOrder}} />
+      <Tab.Screen name="Payment Info" component={PaymentInfo} initialParams={{singledata :singleOrder}}  />
+      <Tab.Screen name="Items" component={Items} initialParams={{singledata :singleOrder}}/>
     </Tab.Navigator>
   );
 };

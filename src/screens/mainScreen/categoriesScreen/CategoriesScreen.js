@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import CategoriesItem from '../../../components/categoriesComponent/categoriesItem/CategoriesItem';
 import categoriesScreenStyle from './categoriesScreenStyle';
 import {allcategories} from '../../../service/api/CategoryApi';
+import Loader from '../../../utils/Loader';
 
 const CategoriesScreen = () => {
   const [category, setCategory] = useState([]);
@@ -25,11 +26,7 @@ const CategoriesScreen = () => {
 
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
-      <Modal visible={loading} transparent={true} animationType="none">
-        <View style={categoriesScreenStyle.modalContainer}>
-          <ActivityIndicator size="large" color="blue" />
-        </View>
-      </Modal>
+      <Loader loading={loading}/>
       <ScrollView>
         <View style={categoriesScreenStyle.categoriesScreenMain}>
           {category.map((item, index) => {

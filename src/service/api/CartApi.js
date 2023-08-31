@@ -61,6 +61,36 @@ export const addCart = async ({userdata}) => {
   }
 };
 
+export const updateCart = async(userdata)=>{
+  const token = await AsyncStorage.getItem('TOKEN');
+  const formData = new FormData();
+  formData.append('cart_id', userdata.cart_id);
+  formData.append("quantity",userdata.quantity);
+  formData.append("priceable_quantity",userdata.priceable_quantity);
+  formData.append("slab_id",userdata.slab_id)
+  formData.append("quantity_count",userdata.quantity_count);
+  try {
+    const res = await axios ({
+      method: "post",
+      url: `${baseUrl}customer/update-cart`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+      data: formData,
+    })
+    return res;
+  } catch (error) {
+    console.log("error",error.data)
+    throw error;
+  }
+}
+
+
+
+
+// Delete Cart
+
 export const deleteCart = async (id) => {
   const token = await AsyncStorage.getItem('TOKEN');
   const formData = new FormData();

@@ -20,7 +20,6 @@ const ProductCard = ({item}) => {
     dispatch(setSelectedProduct(item));
     navigate('Product', {productId: ProductId, item: item});
   };
-  // console.log("itemhai",JSON.stringify(item?.customer_inventories?.transaction?.purchase_data.mrp))
 
   return (
     <View>
