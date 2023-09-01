@@ -23,7 +23,7 @@ const ProductCard = ({item}) => {
 
   return (
     <View>
-      <TouchableOpacity
+      <TouchableOpacity delayPressIn={50} activeOpacity={1} nextFocusDown={10}
         onPress={() => onpress()}
         style={productCardStyle.productCardMain}>
         <View style={productCardStyle.imageHolder}>

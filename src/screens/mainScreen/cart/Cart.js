@@ -24,6 +24,7 @@ const Cart = () => {
   // Get Cart Items
   const {navigate} = useNavigation();
 
+  // console.log("cart",cart)
 
 
   // Get Cart
@@ -45,9 +46,16 @@ const Cart = () => {
 
   useEffect(() => {
       handleGetCart();
+
   }, [cart]);
 
+ 
+// Clear Whole Cart
 
+// const clearCart = ()=>{
+//   setCart([])
+//   dispatch(setCartProducts())
+// }
 
 
 
@@ -70,13 +78,13 @@ const Cart = () => {
       <View style={cartStyle.cartHolder}>
         <View style={cartStyle.cartTopText}>
           <Text style={{color: '#728c9e', fontFamily: fonts.Regular}}>
-            Items: Total {cart.length}
+            Items: Total {cart.length? cart.length:0}
           </Text>
-          <TouchableOpacity>
+          {/* <TouchableOpacity onPress={clearCart}>
             <Text style={{color: colors.black, fontFamily: fonts.SemiBold}}>
               Clear Cart
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         
         <FlatList

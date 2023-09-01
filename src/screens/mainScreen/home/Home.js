@@ -32,7 +32,6 @@ const fetchAddress = async()=> {
     fetchAddress()
   }, [])
   
-  console.log("Address",address)
 
   return (
     <View style={homeStyle.homemain}>

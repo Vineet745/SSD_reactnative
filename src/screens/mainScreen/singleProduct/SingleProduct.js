@@ -29,18 +29,18 @@ import {setCartProducts} from '../../../redux/slice/cartSlice';
 import Loader from '../../../utils/Loader';
 
 const SingleProduct = ({route, navigation}) => {
-  const {selectedProduct} = useSelector(state => state.counter);
-  const dispatch = useDispatch();
-
+  
   const [singledata, setSingledata] = useState('');
   const [loading, setloading] = useState(false);
   const [price, setPrice] = useState(0);
   const [cart, setCart] = useState([]);
   const images = require("../../../assets/images/product_img.png")
-
+  
   const {
     params: {productId},
   } = route;
+  const {selectedProduct} = useSelector(state => state.counter);
+  const dispatch = useDispatch();
 
 
   // Get Single Product
@@ -68,6 +68,10 @@ const SingleProduct = ({route, navigation}) => {
 
 
 //  Cart
+useEffect(() => {
+  handleGetCart()
+}, [])
+
 
 
   const handleGetCart = async () => {
@@ -81,16 +85,14 @@ const SingleProduct = ({route, navigation}) => {
     }
   };
 
-  useEffect(() => {
-    handleGetCart()
-  }, [])
-  
 
   // Check Product Slab
 
   const productSlab =
     singledata.inventoriess?.[0]?.transaction?.purchase_data?.product_slab;
 
+
+  
   const calculatePrice = () => {
     let price = 0;
 

@@ -104,6 +104,11 @@ const CheckOutPage = ({route}) => {
   //Create Order
 
   const handleCreateOrder = async () => {
+      if( !selectedSchedule|| !payment|| !selectedDate){
+    Alert.alert("All fields are Required")
+    return;
+      }
+
     try {
       const data = await createOrder({
         total,
@@ -111,14 +116,23 @@ const CheckOutPage = ({route}) => {
         selectedSchedule,
         selectedDate,
       });
-
-      Alert.alert("Order Placed Successfully")
       navigate("My Orders")
     } catch (error) {
       console.log(error.data);
       Alert.alert("Error in Creating Order")
     }
   };
+
+
+
+  // Validation
+
+
+
+
+
+
+
 
   return (
     <KeyboardAvoidingView style={checkOutStyle.checkOutMain}>
@@ -168,7 +182,7 @@ const CheckOutPage = ({route}) => {
                 fontSize: RFValue(10, 667),
                 color: '#898989',
               }}>
-              {!selectedDate ? 'Select Delievery Data' : selectedDate}
+              {!selectedDate ? 'Select Delievery Date' : selectedDate}
             </Text>
             <TouchableOpacity onPress={() => toggleModal()}>
               <FontAwesome name="calendar" size={20} color="black" />

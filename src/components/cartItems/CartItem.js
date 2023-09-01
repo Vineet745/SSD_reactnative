@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {deleteSingleCartItem} from '../../redux/slice/cartSlice';
 import {deleteCart, updateCart} from '../../service/api/CartApi';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { decrement } from '../../redux/slice/counterSlice';
+import { decrement, increment } from '../../redux/slice/counterSlice';
 const CartItem = ({item}) => {
   const [updated, setUpdated] = useState('')
   const [localQuantity, setLocalQuantity] = useState(item.quantity);
@@ -38,21 +38,19 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
   // Quantity Increment
 
 
-
 // Cart Update
 
 const handleCartUpdate = async()=>{
   try {
     const userData = {
       cart_id : item?.id,
-      quantity: item.quantity ,
-      priceable_quantity: item.priceable_quantity,
+      quantity: localQuantity ,
+      priceable_quantity: localQuantity,
       slab_id: item.slab_id || 0,
-      quantity_count: item.quantity_count
+      quantity_count: localQuantity
     } 
   const {data} = await updateCart(userData)
   setUpdated(data?.data)
-  
 }catch (error) {
   console.log("error",error.message)
 }
@@ -60,12 +58,12 @@ const handleCartUpdate = async()=>{
 
 useEffect(() => {
   handleCartUpdate()
-}, [])
+}, [localQuantity])
 
 
 // Increment
 
-const Increment = () => {
+const increment = () => {
   setLocalQuantity(localQuantity + 1)
   
 }
@@ -127,7 +125,8 @@ const decrement = ()=>{
 
           <View style={cartItemStyle.bottomWrapper}>
             <View style={cartItemStyle.quantityWrapper}>
-              <TouchableOpacity onPress={()=>decrement()}>
+              <TouchableOpacity onPress={()=>{
+                decrement()}}>
                 <Image
                   style={{
                     width: horizontalScale(25),
@@ -140,7 +139,7 @@ const decrement = ()=>{
               <Text style={{fontFamily: fonts.SemiBold}}>
                 {localQuantity}
               </Text>
-              <TouchableOpacity onPress={()=>Increment()}>
+              <TouchableOpacity onPress={()=>increment()}>
                 <Image
                   style={{
                     width: horizontalScale(25),
