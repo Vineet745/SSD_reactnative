@@ -7,7 +7,6 @@ import axios from 'axios';
 export const getCart = async ONLINE => {
   try {
     const token = await AsyncStorage.getItem('TOKEN');
-
     const formData = new FormData();
     formData.append('type', ONLINE);
 
@@ -89,9 +88,9 @@ export const updateCart = async(userdata)=>{
 
 
 
-// Delete Cart
+// Delete Single Cart
 
-export const deleteCart = async (id) => {
+export const deleteSingleCartItem = async (id) => {
   const token = await AsyncStorage.getItem('TOKEN');
   const formData = new FormData();
   formData.append('cart_id', id);
@@ -110,3 +109,23 @@ export const deleteCart = async (id) => {
     console.log('error', error);
   }
 };
+
+
+// DeleteCart
+
+export const deleteCart = async()=>{
+  const token = await AsyncStorage.getItem('TOKEN');
+  try {
+    const res = await axios({
+      method:"post",
+      url:`${baseUrl}customer/delete-cart`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return res;
+  } catch (error) {
+    console.log("error",error)
+  }
+}

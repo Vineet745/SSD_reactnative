@@ -7,14 +7,12 @@ import {horizontalScale, verticalScale} from '../utils/Dimension';
 
 const styles = StyleSheet.create({
   wrapper: {
-    borderColor: 'red',
     marginTop: verticalScale(5),
   },
   slide1: {
     justifyContent: 'center',
     alignItems: 'center',
     width: horizontalScale(375),
-    borderWidth: 1,
   },
   slide2: {
     justifyContent: 'center',
@@ -40,24 +38,25 @@ const styles = StyleSheet.create({
 const CustomSwiper = () => {
   return (
     <Swiper
+    autoplay={true}
       paginationStyle={styles.paginationStyle}
       style={styles.wrapper}
       activeDotColor={colors.black}>
       <View style={styles.slide1}>
         <Image
-          style={{width: '100%'}}
+          style={{width: '95%'}}
           source={require('../assets/images/promo_banner.png')}
         />
       </View>
       <View style={styles.slide2}>
         <Image
-          style={{width: '100%'}}
+          style={{width: '95%'}}
           source={require('../assets/images/promo_banner.png')}
         />
       </View>
       <View style={styles.slide3}>
         <Image
-          style={{width: '100%'}}
+          style={{width: '95%'}}
           source={require('../assets/images/promo_banner.png')}
         />
       </View>

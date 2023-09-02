@@ -32,7 +32,7 @@ export default singleProductStyle = StyleSheet.create({
   price_offer_Discount: {
     color: 'orange',
     fontFamily: fonts.SemiBold,
-    marginLeft: verticalScale(5),
+    marginLeft: verticalScale(10),
   },
   productDescription: {
     borderTopWidth: 0.3,

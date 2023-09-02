@@ -17,16 +17,3 @@ export const store = configureStore({
   },
 });
 
-// const reducer = combineReducers({
-//       user: authSlice,
-//       counter: counterSlice,
-//       cart: cartSlice,
-//       order: orderlice,
-//     })
-//     const persistedReducer = persistReducer(persistConfig, reducer)
-
-//     const store = configureStore({
-//       reducer:persistedReducer
-// })
-// export default store;
-    

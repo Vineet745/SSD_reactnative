@@ -32,19 +32,19 @@ const navigation = useNavigation();
 
   // Single Orders
 
-  const handleSingleOrder = async()=>{
-    try {
-  const {data} = await getSingleOrder(orderId)
-  setsingleOrderData(data?.data?.data[0])
+//   const handleSingleOrder = async()=>{
+//     try {
+//   const {data} = await getSingleOrder(orderId)
+//   setsingleOrderData(data?.data?.data[0])
 
-} catch (error) {
-console.log("error",error)
-}
-}
+// } catch (error) {
+// console.log("error",error)
+// }
+// }
 
-useEffect(() => {
-handleSingleOrder()
-}, [])
+// useEffect(() => {
+// handleSingleOrder()
+// }, [])
 
 
 

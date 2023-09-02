@@ -5,15 +5,14 @@ import {colors, fonts} from '../../../utils/Theme';
 import CartItem from '../../../components/cartItems/CartItem';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {getCart} from '../../../service/api/CartApi';
-import {useDispatch, useSelector} from 'react-redux';
-import { cartlength, setCartProducts } from '../../../redux/slice/cartSlice';
+import {deleteCart, getCart} from '../../../service/api/CartApi';
+import {useDispatch} from 'react-redux';
+import { setCartProducts } from '../../../redux/slice/cartSlice';
 import Loader from '../../../utils/Loader';
 
 const Cart = () => {
   
   const dispatch = useDispatch();
-  const isfocused = useIsFocused();
   const [cart, setCart] = useState([])
   const [total,setTotal] = useState()
   const [loading, setloading] = useState(false);
@@ -50,12 +49,15 @@ const Cart = () => {
   }, [cart]);
 
  
-// Clear Whole Cart
+// Clear Cart
 
-// const clearCart = ()=>{
-//   setCart([])
-//   dispatch(setCartProducts())
-// }
+const clearCart = async()=>{
+  try {
+    const data = await deleteCart()
+  } catch (error) {
+    console.log("error",error)
+  }
+}
 
 
 
@@ -80,11 +82,11 @@ const Cart = () => {
           <Text style={{color: '#728c9e', fontFamily: fonts.Regular}}>
             Items: Total {cart.length? cart.length:0}
           </Text>
-          {/* <TouchableOpacity onPress={clearCart}>
+          <TouchableOpacity onPress={clearCart} >
             <Text style={{color: colors.black, fontFamily: fonts.SemiBold}}>
               Clear Cart
             </Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
         
         <FlatList

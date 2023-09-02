@@ -2,9 +2,10 @@ import {
   View,
   Text,
   ScrollView,
-  FlatList,
+  // FlatList,
   ActivityIndicator,
   Modal,
+  FlatList,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {colors} from '../../../utils/Theme';
@@ -12,7 +13,6 @@ import {getAllProducts} from '../../../service/api/ProductApi';
 import ProductCard from '../../../components/productComponent/productsCard/ProductCard';
 import categoriesScreenStyle from '../categoriesScreen/categoriesScreenStyle';
 import {horizontalScale, verticalScale} from '../../../utils/Dimension';
-
 const FeatureProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setloading] = useState(false);

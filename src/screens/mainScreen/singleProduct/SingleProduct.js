@@ -42,6 +42,18 @@ const SingleProduct = ({route, navigation}) => {
   const {selectedProduct} = useSelector(state => state.counter);
   const dispatch = useDispatch();
 
+ 
+  // Calculate off percentage
+  const Mrp = singledata?.inventoriess?.[0]?.transaction?.purchase_data?.mrp
+  const ourPrice = singledata?.inventoriess?.[0]?.transaction?.purchase_data
+  ?.default_price
+  const marginPrice = Mrp - ourPrice
+  const off = (marginPrice/Mrp)*100
+
+
+
+
+
 
   // Get Single Product
 
@@ -217,11 +229,11 @@ const handleCheckCart = () => {
             <View style={singleProductStyle.price_offer}>
               <Text style={singleProductStyle.price_offer_textone}>
                 M.R.P.: ₹{' '}
-                {singledata?.inventoriess?.[0]?.transaction?.purchase_data?.mrp}
+                {Mrp}
               </Text>
 
               <Text style={singleProductStyle.price_offer_Discount}>
-                20% Off
+                {off.toFixed(0)}% Off
               </Text>
             </View>
             <Text
@@ -231,8 +243,7 @@ const handleCheckCart = () => {
               ]}>
               Our Price: ₹{' '}
               {
-                singledata?.inventoriess?.[0]?.transaction?.purchase_data
-                  ?.default_price
+                ourPrice
               }
             </Text>
           </View>

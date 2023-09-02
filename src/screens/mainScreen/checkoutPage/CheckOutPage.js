@@ -32,7 +32,6 @@ const CheckOutPage = ({route}) => {
   const [selectedSchedule, setSelectedSchedule] = useState('');
   const [mobileNumber, setMobileNumber] = useState();
 
-  // const [loyaltyPoints, setLoyaltyPointx
   const [payment, setPayment] = useState();
   const [visible, setVisible] = useState(false);
 
@@ -44,7 +43,7 @@ const CheckOutPage = ({route}) => {
   // Toggle Modal
 
   const toggleModal = () => {
-    setVisible(!visible);
+    setVisible((previousState) => !previousState);
   };
 
   // GetCustomerDetails ----------------------------------
@@ -86,13 +85,7 @@ const CheckOutPage = ({route}) => {
     {name: 'COD', id: 4},
   ];
 
-  // loyalty Points Function
-
-  // const points = () => {
-  //   const totalLoyaltyPoints = 253;
-  //   const AfterRedeem = totalLoyaltyPoints - loyaltyPoints;
-  //   setRedeemPoints(AfterRedeem);
-  // };
+  
 
   // Modify Schedule data
 
@@ -108,7 +101,6 @@ const CheckOutPage = ({route}) => {
     Alert.alert("All fields are Required")
     return;
       }
-
     try {
       const data = await createOrder({
         total,
@@ -116,6 +108,7 @@ const CheckOutPage = ({route}) => {
         selectedSchedule,
         selectedDate,
       });
+      console.log("data",data)
       navigate("My Orders")
     } catch (error) {
       console.log(error.data);

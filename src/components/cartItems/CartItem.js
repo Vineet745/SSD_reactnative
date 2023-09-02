@@ -6,8 +6,7 @@ import {horizontalScale, verticalScale} from '../../utils/Dimension';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteSingleCartItem} from '../../redux/slice/cartSlice';
-import {deleteCart, updateCart} from '../../service/api/CartApi';
+import {deleteSingleCartItem, updateCart} from '../../service/api/CartApi';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { decrement, increment } from '../../redux/slice/counterSlice';
 const CartItem = ({item}) => {
@@ -28,7 +27,7 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
 
   const DeleteSingleItem = async () => {
     try {
-      const {data} = await deleteCart(id);
+      const {data} = await deleteSingleCartItem(id);
       dispatch(deleteSingleCartItem(productId));
     } catch (error) {
       console.log(error, 'error');
