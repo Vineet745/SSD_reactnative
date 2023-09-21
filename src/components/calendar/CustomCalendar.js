@@ -19,7 +19,6 @@ const CustomCalendar = () => {
         borderColor: 'gray',
         height: 320,
       }}
-      enableSwipeMonths
       onDayPress={(day) => {
         const formattedDate = formatDate(day.dateString);
         setSelected(formattedDate);

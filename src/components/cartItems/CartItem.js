@@ -1,33 +1,34 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import React,{useEffect,useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import cartItemStyle from './cartItemStyle';
 import {fonts} from '../../utils/Theme';
 import {horizontalScale, verticalScale} from '../../utils/Dimension';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {deleteSingleCartItem, updateCart} from '../../service/api/CartApi';
-import { RFValue } from 'react-native-responsive-fontsize';
-import { decrement, increment } from '../../redux/slice/counterSlice';
-const CartItem = ({item}) => {
-  const [updated, setUpdated] = useState('')
+import {
+  deleteSingleCartItem,
+  getCart,
+  updateCart,
+} from '../../service/api/CartApi';
+import {RFValue} from 'react-native-responsive-fontsize';
+import {decrement, increment} from '../../redux/slice/counterSlice';
+const CartItem = ({item, setRender}) => {
+  const [updated, setUpdated] = useState('');
   const [localQuantity, setLocalQuantity] = useState(item.quantity);
-const defaultPrice = item?.inventories?.transaction?.purchase_data?.default_price
-const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
-
-// console.log("item",JSON.stringify(item))
+  const Mrp = item?.inventories?.transaction?.purchase_data?.mrp;
 
   const productId = item.product_id;
   const id = item.id;
-  const {navigate} = useNavigation();  
+  const {navigate} = useNavigation();
   const dispatch = useDispatch();
-
-
+  const isFocused = useIsFocused()
   // Delete Single Cart Item
 
   const DeleteSingleItem = async () => {
     try {
       const {data} = await deleteSingleCartItem(id);
+      setRender(true);
       dispatch(deleteSingleCartItem(productId));
     } catch (error) {
       console.log(error, 'error');
@@ -36,43 +37,52 @@ const Mrp = item?.inventories?.transaction?.purchase_data?.mrp
 
   // Quantity Increment
 
+  // Cart Update
 
-// Cart Update
-
-const handleCartUpdate = async()=>{
-  try {
-    const userData = {
-      cart_id : item?.id,
-      quantity: localQuantity ,
-      priceable_quantity: localQuantity,
-      slab_id: item.slab_id || 0,
-      quantity_count: localQuantity
-    } 
-  const {data} = await updateCart(userData)
-  setUpdated(data?.data)
-}catch (error) {
-  console.log("error",error.message)
-}
-}
-
-useEffect(() => {
-  handleCartUpdate()
-}, [localQuantity])
+  const handleCartUpdate = async()=>{
+    try {
+      const userData = {
+        cart_id : item?.id,
+        quantity: localQuantity ,
+        priceable_quantity: localQuantity,
+        slab_id: item.slab_id || 0,
+        quantity_count: localQuantity
+      }
+    const {data} = await updateCart(userData)
+    setUpdated(data?.data)
+  }catch (error) {
+    console.log("error",error.message)
+  }
+  }
 
 
-// Increment
+  useEffect(() => {
+    handleCartUpdate();
+  }, [localQuantity]);
 
-const increment = () => {
-  setLocalQuantity(localQuantity + 1)
+  // Increment
+
+  // const increment = () => {
+  //   setLocalQuantity(localQuantity + 1)
+  // }
+
+
+  // const decrement = () => {
+  //   setLocalQuantity(localQuantity - 1)
+  // }
+
+ const increment = useCallback(() => {
+    setLocalQuantity(localQuantity + 1);
+    getCart()
+  }, [localQuantity]);
+
+  // Decrement
+
+  const decrement = useCallback(() => {
+   setLocalQuantity(localQuantity - 1)
+    },[localQuantity],
+  )
   
-}
-
-// Decrement
-
-const decrement = ()=>{
-  setLocalQuantity(localQuantity - 1)
-}
-
 
   return (
     <View style={cartItemStyle.cartItemMain}>
@@ -109,7 +119,9 @@ const decrement = ()=>{
               <Text style={cartItemStyle.MrpText}>M.R.P. : ₹ {Mrp}</Text>
             </View>
             <Text style={cartItemStyle.offerText}> 20% Off</Text>
-            <Text style={cartItemStyle.ourPriceText}>Our Price: ₹ {item.price}</Text>
+            <Text style={cartItemStyle.ourPriceText}>
+              Our Price: ₹ {item.price}
+            </Text>
           </View>
 
           {/* Border View */}
@@ -124,8 +136,10 @@ const decrement = ()=>{
 
           <View style={cartItemStyle.bottomWrapper}>
             <View style={cartItemStyle.quantityWrapper}>
-              <TouchableOpacity onPress={()=>{
-                decrement()}}>
+              <TouchableOpacity
+                onPress={() => {
+                  decrement();
+                }}>
                 <Image
                   style={{
                     width: horizontalScale(25),
@@ -135,10 +149,8 @@ const decrement = ()=>{
                 />
               </TouchableOpacity>
 
-              <Text style={{fontFamily: fonts.SemiBold}}>
-                {localQuantity}
-              </Text>
-              <TouchableOpacity onPress={()=>increment()}>
+              <Text style={{fontFamily: fonts.SemiBold}}>{localQuantity}</Text>
+              <TouchableOpacity onPress={() => increment()}>
                 <Image
                   style={{
                     width: horizontalScale(25),
@@ -152,9 +164,14 @@ const decrement = ()=>{
             <TouchableOpacity style={{marginLeft: verticalScale(5)}}>
               <AntDesign name="close" size={15} />
             </TouchableOpacity>
-            <Text style={{fontFamily: fonts.SemiBold,fontSize:RFValue(11,667)}}> ₹ {item.price} =  </Text>
-            <Text style={{fontFamily: fonts.SemiBold,fontSize:RFValue(11,667)}}>
-            {localQuantity * item.price}
+            <Text
+              style={{fontFamily: fonts.SemiBold, fontSize: RFValue(11, 667)}}>
+              {' '}
+              ₹ {item.price} ={' '}
+            </Text>
+            <Text
+              style={{fontFamily: fonts.SemiBold, fontSize: RFValue(11, 667)}}>
+              {localQuantity * item.price}
             </Text>
           </View>
         </View>

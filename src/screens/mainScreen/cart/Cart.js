@@ -6,9 +6,10 @@ import CartItem from '../../../components/cartItems/CartItem';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {deleteCart, getCart} from '../../../service/api/CartApi';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { setCartProducts } from '../../../redux/slice/cartSlice';
 import Loader from '../../../utils/Loader';
+import { fetchCart } from '../../../redux/slice/productSlice';
 
 const Cart = () => {
   
@@ -16,14 +17,15 @@ const Cart = () => {
   const [cart, setCart] = useState([])
   const [total,setTotal] = useState()
   const [loading, setloading] = useState(false);
+  const [render,setRender] = useState(false)
 
-
+    const data = useSelector(state=>state.product)
+// console.log("data",data) 
 
 
   // Get Cart Items
   const {navigate} = useNavigation();
 
-  // console.log("cart",cart)
 
 
   // Get Cart
@@ -33,6 +35,7 @@ const Cart = () => {
       setloading(true)
       const {data} = await getCart('ONLINE')
       setTotal(data?.total_amount)
+      console.log(data?.total_amount)
       setCart(data?.data?.data)
       dispatch(setCartProducts(data?.data?.data))
       setloading(false)
@@ -42,11 +45,9 @@ const Cart = () => {
       throw error;
     }
   }; 
-
   useEffect(() => {
       handleGetCart();
-
-  }, [cart]);
+  }, [render]);
 
  
 // Clear Cart
@@ -58,7 +59,6 @@ const clearCart = async()=>{
     console.log("error",error)
   }
 }
-
 
 
 
@@ -76,6 +76,9 @@ const clearCart = async()=>{
           Add Items of at least ₹ 175.50 more to get FREE DELIVERY!
         </Text>
       </View>
+      {/* <TouchableOpacity onPress={()=>dispatch(fetchCart())} style={{borderWidth:1,width:50,height:30,alignSelf:"center"}}> 
+        <Text style={{alignSelf:"center"}}>Button</Text>
+      </TouchableOpacity> */}
 
       <View style={cartStyle.cartHolder}>
         <View style={cartStyle.cartTopText}>
@@ -95,7 +98,7 @@ const clearCart = async()=>{
           keyExtractor={(item, index) => index}
           renderItem={({item, index}) => ( 
                  
-              <CartItem item={item} />
+              <CartItem item={item} setRender={setRender}/>
           )}
         />
 
